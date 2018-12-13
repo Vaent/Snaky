@@ -1,5 +1,6 @@
 'use strict'
 
+var snake = [];
 var rowChangeAmount = 0;
 var colChangeAmount = 1;
 const tableElement = document.getElementById('gameView');
@@ -27,19 +28,22 @@ const tableElement = document.getElementById('gameView');
   })
 })();
 
-function move() {
-  let oPositionInHtml = tableElement.innerHTML.indexOf('o');
-  let rowIndex = getIndex(oPositionInHtml - 5, oPositionInHtml - 4);
-  let colIndex = getIndex(oPositionInHtml - 3, oPositionInHtml - 2);
-  let newRow = rowIndex + rowChangeAmount;
-  let newCol = colIndex + colChangeAmount;
+function addToSnakeBody(char, row, col) {
+  snake.push({char:char, row:row, col:col});
+}
 
-  if(!!cellInTable(newRow, newCol)) {
-    cellInTable(rowIndex, colIndex).innerHTML = '';
-    cellInTable(newRow, newCol).innerHTML = 'o';
-    setTimeout(function(){ move() }, 500);
+function move() {
+  let oldRowIndex = snake[0]['row'];
+  let oldColIndex = snake[0]['col'];
+  snake[0]['row'] = oldRowIndex + rowChangeAmount;
+  snake[0]['col'] = oldColIndex + colChangeAmount;
+
+  if(!!cellInTable(snake[0]['row'], snake[0]['col'])) {
+    cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
+    cellInTable(snake[0]['row'], snake[0]['col']).innerHTML = snake[0]['char'];
+    setTimeout(function(){ move() }, 250);
   } else {
-    cellInTable(rowIndex, colIndex).innerHTML = 'x';
+    cellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
   }
 }
 
@@ -51,4 +55,5 @@ function cellInTable(row, col) {
   return document.getElementById(`r${row}c${col}`);
 }
 
+addToSnakeBody('o', 1, 1);
 move();
