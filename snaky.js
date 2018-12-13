@@ -1,44 +1,54 @@
-var directions = [[0,1],[1,0],[0,-1],[-1,0]]; // right, down, left, up
-var directionsIndex = 0;
+'use strict'
+
+var rowChangeAmount = 0;
+var colChangeAmount = 1;
+const tableElement = document.getElementById('gameView');
+
 (function() {
-  document.addEventListener('keydown', function(event){
+  document.addEventListener('keydown', function(event) {
     switch(event.key){
       case "ArrowRight":
-        directionsIndex = 0;
+        rowChangeAmount = 0;
+        colChangeAmount = 1;
         break;
       case "ArrowDown":
-        directionsIndex = 1;
+        rowChangeAmount = 1;
+        colChangeAmount = 0;
         break;
       case "ArrowLeft":
-        directionsIndex = 2;
+        rowChangeAmount = 0;
+        colChangeAmount = -1;
         break;
       case "ArrowUp":
-        directionsIndex = 3;
+        rowChangeAmount = -1;
+        colChangeAmount = 0;
         break;
     }
-  });
+  })
 })();
+
 function move() {
-  rowIndex = Number(
-    document.getElementById('gameView').innerHTML.slice(
-      document.getElementById('gameView').innerHTML.indexOf('o') - 5,
-      document.getElementById('gameView').innerHTML.indexOf('o') - 4
-    )
-  );
-  colIndex = Number(
-    document.getElementById('gameView').innerHTML.slice(
-      document.getElementById('gameView').innerHTML.indexOf('o') - 3,
-      document.getElementById('gameView').innerHTML.indexOf('o') - 2
-    )
-  );
-  newRow = rowIndex + directions[directionsIndex][0];
-  newCol = colIndex + directions[directionsIndex][1];
-  if(!!document.getElementById(`r${newRow}c${newCol}`)) {
-    document.getElementById(`r${rowIndex}c${colIndex}`).innerHTML = '';
-    document.getElementById(`r${newRow}c${newCol}`).innerHTML = 'o';
-    setTimeout(function(){move();}, 500);
+  let oPositionInHtml = tableElement.innerHTML.indexOf('o');
+  let rowIndex = getIndex(oPositionInHtml - 5, oPositionInHtml - 4);
+  let colIndex = getIndex(oPositionInHtml - 3, oPositionInHtml - 2);
+  let newRow = rowIndex + rowChangeAmount;
+  let newCol = colIndex + colChangeAmount;
+
+  if(!!cellInTable(newRow, newCol)) {
+    cellInTable(rowIndex, colIndex).innerHTML = '';
+    cellInTable(newRow, newCol).innerHTML = 'o';
+    setTimeout(function(){ move() }, 500);
   } else {
-    document.getElementById(`r${rowIndex}c${colIndex}`).innerHTML = 'x';
+    cellInTable(rowIndex, colIndex).innerHTML = 'x';
   }
-};
+}
+
+function getIndex(start, end) {
+  return Number(tableElement.innerHTML.slice(start, end));
+}
+
+function cellInTable(row, col) {
+  return document.getElementById(`r${row}c${col}`);
+}
+
 move();
