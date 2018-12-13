@@ -27,6 +27,9 @@ function move() {
         alive = false;
         cellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
       } else {
+        if(cellInTable(bodyPart['row'], bodyPart['col']).innerHTML === ';') {
+          makeFood();
+        }
         cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
         cellInTable(bodyPart['row'], bodyPart['col']).innerHTML =
         bodyPart['char'];
@@ -39,6 +42,10 @@ function move() {
 function makeFood() {
   let rowIndex = Math.floor(Math.random() * numberOfRows) + 1;
   let colIndex = Math.floor(Math.random() * numberOfColumns) + 1;
+  while(cellInTable(rowIndex, colIndex).innerHTML !== '') {
+    rowIndex = Math.floor(Math.random() * numberOfRows) + 1;
+    colIndex = Math.floor(Math.random() * numberOfColumns) + 1;
+  }
   cellInTable(rowIndex, colIndex).innerHTML = ';';
 }
 
@@ -85,7 +92,7 @@ function cellInTable(row, col) {
     addToSnakeBody('+', 1, 3);
     addToSnakeBody('+', 1, 2);
     addToSnakeBody('+', 1, 1);
-    makeFood();
     move();
+    makeFood();
   });
 })();
