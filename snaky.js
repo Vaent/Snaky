@@ -1,10 +1,11 @@
 'use strict'
 
-var snake = [];
-var rowChangeAmount = 0;
-var colChangeAmount = 1;
-var delayBetweenMoves = 100;
-const tableElement = document.getElementById('gameView');
+var numberOfRows = 12,
+  numberOfColumns = 16,
+  snake = [],
+  rowChangeAmount = 0,
+  colChangeAmount = 1,
+  delayBetweenMoves = 100;
 
 function addToSnakeBody(char, row, col) {
   snake.push({char:char, row:row, col:col});
@@ -22,7 +23,7 @@ function move() {
       }
 
       if(!cellInTable(bodyPart['row'], bodyPart['col']) ||
-      cellInTable(bodyPart['row'], bodyPart['col']).innerHTML !== '') {
+      cellInTable(bodyPart['row'], bodyPart['col']).innerHTML === '+') {
         alive = false;
         cellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
       } else {
@@ -33,6 +34,12 @@ function move() {
     }
   });
   if(alive){ setTimeout(function(){ move() }, delayBetweenMoves); }
+}
+
+function makeFood() {
+  let rowIndex = Math.floor(Math.random() * numberOfRows) + 1;
+  let colIndex = Math.floor(Math.random() * numberOfColumns) + 1;
+  cellInTable(rowIndex, colIndex).innerHTML = ';';
 }
 
 function cellInTable(row, col) {
@@ -64,7 +71,6 @@ function cellInTable(row, col) {
   });
 
   document.addEventListener('DOMContentLoaded', function() {
-    let numberOfRows = 12, numberOfColumns = 16;
     for(let r=1; r<=numberOfRows; r++) {
       let htmlToAdd = ''
       htmlToAdd += '<tr>';
@@ -72,13 +78,14 @@ function cellInTable(row, col) {
         htmlToAdd += `<td id='r${String(r).padStart(2,'0')}c${String(c).padStart(2,'0')}'></td>`;
       }
       htmlToAdd += '</tr>';
-      tableElement.innerHTML += htmlToAdd;
+      document.getElementById('gameView').innerHTML += htmlToAdd;
     }
 
     addToSnakeBody('o', 1, 4);
     addToSnakeBody('+', 1, 3);
     addToSnakeBody('+', 1, 2);
     addToSnakeBody('+', 1, 1);
+    makeFood();
     move();
   });
 })();

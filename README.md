@@ -2,7 +2,7 @@
 
 A clone of Snake created to test my ability to manipulate an HTML page using raw JavaScript.
 
-The game is loaded by opening index.html (which loads the snaky.js script from the same directory).
+The game is loaded by opening index.html (which pulls in the snaky.js script and styles.css sheet from the same directory).
 
 ### How it works
 
