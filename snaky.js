@@ -33,18 +33,26 @@ function addToSnakeBody(char, row, col) {
 }
 
 function move() {
-  let oldRowIndex = snake[0]['row'];
-  let oldColIndex = snake[0]['col'];
-  snake[0]['row'] = oldRowIndex + rowChangeAmount;
-  snake[0]['col'] = oldColIndex + colChangeAmount;
+  let alive = true, oldRowIndex = -1, oldColIndex;
+  snake.forEach(function(bodyPart) {
+    if(alive) {
+      [oldRowIndex, bodyPart['row']] = [bodyPart['row'], oldRowIndex];
+      [oldColIndex, bodyPart['col']] = [bodyPart['col'], oldColIndex];
+      if(bodyPart['row'] < 0) {
+        bodyPart['row'] = oldRowIndex + rowChangeAmount;
+        bodyPart['col'] = oldColIndex + colChangeAmount;
+      }
 
-  if(!!cellInTable(snake[0]['row'], snake[0]['col'])) {
-    cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
-    cellInTable(snake[0]['row'], snake[0]['col']).innerHTML = snake[0]['char'];
-    setTimeout(function(){ move() }, 250);
-  } else {
-    cellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
-  }
+      if(!!cellInTable(bodyPart['row'], bodyPart['col'])) {
+        cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
+        cellInTable(bodyPart['row'], bodyPart['col']).innerHTML = bodyPart['char'];
+      } else {
+        alive = false;
+        cellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
+      }
+    }
+  });
+  if(alive){ setTimeout(function(){ move() }, 250); }
 }
 
 function getIndex(start, end) {
@@ -55,5 +63,8 @@ function cellInTable(row, col) {
   return document.getElementById(`r${row}c${col}`);
 }
 
-addToSnakeBody('o', 1, 1);
+addToSnakeBody('o', 1, 4);
+addToSnakeBody('+', 1, 3);
+addToSnakeBody('+', 1, 2);
+addToSnakeBody('+', 1, 1);
 move();
