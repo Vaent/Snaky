@@ -43,12 +43,13 @@ function move() {
         bodyPart['col'] = oldColIndex + colChangeAmount;
       }
 
-      if(!!cellInTable(bodyPart['row'], bodyPart['col'])) {
-        cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
-        cellInTable(bodyPart['row'], bodyPart['col']).innerHTML = bodyPart['char'];
-      } else {
+      if(!cellInTable(bodyPart['row'], bodyPart['col']) ||
+      cellInTable(bodyPart['row'], bodyPart['col']).innerHTML !== '') {
         alive = false;
         cellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
+      } else {
+        cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
+        cellInTable(bodyPart['row'], bodyPart['col']).innerHTML = bodyPart['char'];
       }
     }
   });

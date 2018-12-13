@@ -16,8 +16,6 @@ The script then sets up a function called `move()`. This function changes the po
 
 Finally, the script calls `move()` to get things going.
 
-At the start of each `move()` call, the snake is declared to be still alive. There is a check within `move()` for the snake reaching an edge and trying to move outside the box. When this happens, the head is changed from an 'o' to an 'x' and the snake is 'killed' so that the other body parts won't try to update its position.
+At the start of each `move()` call, the snake is declared to be still alive. There is a check within `move()` for the snake colliding with its tail (including moving back on itself) or with the edge of the box (trying to move into a space that doesn't exist in the game). When one of these happens, the head is changed from an 'o' to an 'x' and the snake is 'killed' so that the other body parts won't try to update its position.
 
 At the end of `move()`, if the snake is still alive, a timer is set up to call `move()` again after 250 milliseconds. This allows the snake to keep moving, one space every quarter-second, without any input from the player. If the snake dies, the timer is not set so that no further `move()` calls will be made.
-
-N.B. in the current implementation, the snake can run across its own body, in which case the head will be temporarily hidden by other body parts which update later in the sequence and overwrite anything which went in the same space before them.
