@@ -28,9 +28,12 @@ function move() {
         cellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
       } else {
         if(cellInTable(bodyPart['row'], bodyPart['col']).innerHTML === ';') {
+          addToSnakeBody('+', -1, -1);
           makeFood();
         }
-        cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
+        if(!!cellInTable(oldRowIndex, oldColIndex)) {
+          cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
+        }
         cellInTable(bodyPart['row'], bodyPart['col']).innerHTML =
         bodyPart['char'];
       }
