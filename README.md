@@ -26,13 +26,14 @@ Food, represented by a semicolon, is spawned by the `makeFood()` function. Rando
 
 Food is spawned at the start of the game - after the snake is created, to ensure it doesn't accidentally get overwritten. `move()` identifies when a body part will move into a cell with a semicolon, and immediately calls `makeFood()` to ensure there will still be food somewhere after the existing food is overwritten. It also adds a new body part on the end of the snake, initialised in a nonexistent cell to ensure no conflicts with any elements already in play; since it is at the end of the body, in the last iteration of the `snake.forEach()` loop it will take the position of the previous final body part.
 
-Initialising the new body part in a nonexistent cell required an additional check within `move()` (`if(!!cellInTable(oldRowIndex, oldColIndex)) {...}`) to ensure the function doesn't try to clear that cell.
+Initialising the new body part in a nonexistent cell required an additional check within `move()` (`if(!!cellInTable(oldRowIndex, oldColIndex)) {...}`) to ensure the function doesn't try to clear that cell after the new body part has moved into play.
 
 ---
 
 **\* Footnote about building a table through JS:**
 HTML is lenient. You don't always need to specify closing tags - if they're not present, the browser will add them wherever it deems appropriate. This caused issues when I tried to do something like
-```.innerHTML += '<tr>'
+```
+.innerHTML += '<tr>'
 ...
 .innerHTML += '<td>foo</td>'
 ...
