@@ -1,6 +1,7 @@
 'use strict'
 
 var score = 0,
+  gameIsInProgress = false,
   numberOfRows = 12,
   numberOfColumns = 16,
   snake = [],
@@ -10,6 +11,10 @@ var score = 0,
 
 function addToSnakeBody(char, row, col) {
   snake.push({char:char, row:row, col:col});
+}
+
+function display(bodyPart) {
+  cellInTable(bodyPart['row'], bodyPart['col']).innerHTML = bodyPart['char'];
 }
 
 function move() {
@@ -37,8 +42,7 @@ function move() {
         if(!!cellInTable(oldRowIndex, oldColIndex)) {
           cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
         }
-        cellInTable(bodyPart['row'], bodyPart['col']).innerHTML =
-        bodyPart['char'];
+        display(bodyPart);
       }
     }
   });
@@ -61,6 +65,13 @@ function cellInTable(row, col) {
   );
 }
 
+function startGame() {
+  document.getElementById('banner').innerHTML = `Score: ${score}`;
+  move();
+  makeFood();
+  gameIsInProgress = true;
+}
+
 (function() {
   document.addEventListener('keydown', function(event) {
     switch(event.key){
@@ -81,6 +92,7 @@ function cellInTable(row, col) {
         colChangeAmount = 0;
         break;
     }
+    if(!gameIsInProgress){ startGame() }
   });
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -94,17 +106,10 @@ function cellInTable(row, col) {
       document.getElementById('gameView').innerHTML += htmlToAdd;
     }
 
-    addToSnakeBody('o', 1, 4);
-    addToSnakeBody('+', 1, 3);
-    addToSnakeBody('+', 1, 2);
-    addToSnakeBody('+', 1, 1);
-  });
-  document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('click', function clickToStart() {
-      document.getElementById('banner').innerHTML = `Score: ${score}`;
-      move();
-      makeFood();
-      document.removeEventListener('click', clickToStart);
-    });
+    addToSnakeBody('o', 6, 4);
+    addToSnakeBody('+', 6, 3);
+    addToSnakeBody('+', 6, 2);
+    addToSnakeBody('+', 6, 1);
+    snake.forEach(function(bodyPart){ display(bodyPart) });
   });
 })();
