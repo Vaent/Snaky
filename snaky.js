@@ -31,7 +31,7 @@ function move() {
         if(cellInTable(bodyPart['row'], bodyPart['col']).innerHTML === ';') {
           addToSnakeBody('+', -1, -1);
           score ++;
-          document.getElementById('score').innerHTML = score;
+          document.getElementById('banner').innerHTML = `Score: ${score}`;
           makeFood();
         }
         if(!!cellInTable(oldRowIndex, oldColIndex)) {
@@ -98,7 +98,13 @@ function cellInTable(row, col) {
     addToSnakeBody('+', 1, 3);
     addToSnakeBody('+', 1, 2);
     addToSnakeBody('+', 1, 1);
-    move();
-    makeFood();
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('click', function clickToStart() {
+      document.getElementById('banner').innerHTML = `Score: ${score}`;
+      move();
+      makeFood();
+      document.removeEventListener('click', clickToStart);
+    });
   });
 })();
