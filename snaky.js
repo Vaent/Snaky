@@ -2,11 +2,15 @@
 
 var score = 0,
   gameIsInProgress = false,
+  alive = true,
+  pendingMove,
   numberOfRows = 12,
   numberOfColumns = 16,
   snake = [],
   rowChangeAmount = 0,
   colChangeAmount = 1,
+  newRowChangeAmount,
+  newColChangeAmount,
   delayBetweenMoves = 100;
 
 function addToSnakeBody(char, row, col) {
@@ -18,16 +22,22 @@ function display(bodyPart) {
 }
 
 function move() {
-  let alive = true, oldRowIndex = -1, oldColIndex;
+  clearTimeout(pendingMove); // ensure there are no overlapping timeouts
+  let oldRowIndex = -1, oldColIndex;
   snake.forEach(function(bodyPart) {
-    if(alive) {
+    if(alive) { // after the head dies, the rest of the body doesn't move
+      if(newRowChangeAmount !== -rowChangeAmount &&
+      newColChangeAmount !== -colChangeAmount) {
+        // update direction only if not reversing direction
+        rowChangeAmount = newRowChangeAmount;
+        colChangeAmount = newColChangeAmount;
+      }
       [oldRowIndex, bodyPart['row']] = [bodyPart['row'], oldRowIndex];
       [oldColIndex, bodyPart['col']] = [bodyPart['col'], oldColIndex];
       if(bodyPart['row'] < 0) {
         bodyPart['row'] = oldRowIndex + rowChangeAmount;
         bodyPart['col'] = oldColIndex + colChangeAmount;
       }
-
       if(!cellInTable(bodyPart['row'], bodyPart['col']) ||
       cellInTable(bodyPart['row'], bodyPart['col']).innerHTML === '+') {
         alive = false;
@@ -46,7 +56,9 @@ function move() {
       }
     }
   });
-  if(alive){ setTimeout(function(){ move() }, delayBetweenMoves); }
+  if(alive) {
+    pendingMove = setTimeout(function(){ move() }, delayBetweenMoves);
+  }
 }
 
 function makeFood() {
@@ -74,33 +86,29 @@ function startGame() {
 
 (function() {
   document.addEventListener('keydown', function(event) {
-    switch(event.key){
+    switch(event.key) {
       case "ArrowRight":
-        if(colChangeAmount !== -1) {
-          rowChangeAmount = 0;
-          colChangeAmount = 1;
-        }
+        newRowChangeAmount = 0;
+        newColChangeAmount = 1;
         break;
       case "ArrowDown":
-        if(rowChangeAmount !== -1) {
-          rowChangeAmount = 1;
-          colChangeAmount = 0;
-        }
+        newRowChangeAmount = 1;
+        newColChangeAmount = 0;
         break;
       case "ArrowLeft":
-        if(colChangeAmount !== 1) {
-          rowChangeAmount = 0;
-          colChangeAmount = -1;
-        }
+        newRowChangeAmount = 0;
+        newColChangeAmount = -1;
         break;
       case "ArrowUp":
-        if(rowChangeAmount !== 1) {
-          rowChangeAmount = -1;
-          colChangeAmount = 0;
-        }
+        newRowChangeAmount = -1;
+        newColChangeAmount = 0;
         break;
     }
-    if(!gameIsInProgress){ startGame() }
+    if(!gameIsInProgress) {
+      startGame();
+    } else if(newRowChangeAmount !== Math.abs(rowChangeAmount)) {
+      move(); // if direction has changed, don't wait for timeout
+    }
   });
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -108,7 +116,9 @@ function startGame() {
       let htmlToAdd = ''
       htmlToAdd += '<tr>';
       for(let c=1; c<=numberOfColumns; c++) {
-        htmlToAdd += `<td id='r${String(r).padStart(2,'0')}c${String(c).padStart(2,'0')}'></td>`;
+        let row2digit = String(r).padStart(2,'0');
+        let col2digit = String(c).padStart(2,'0');
+        htmlToAdd += `<td id='r${row2digit}c${col2digit}'></td>`;
       }
       htmlToAdd += '</tr>';
       document.getElementById('gameView').innerHTML += htmlToAdd;
