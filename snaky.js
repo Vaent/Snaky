@@ -76,20 +76,28 @@ function startGame() {
   document.addEventListener('keydown', function(event) {
     switch(event.key){
       case "ArrowRight":
-        rowChangeAmount = 0;
-        colChangeAmount = 1;
+        if(colChangeAmount !== -1) {
+          rowChangeAmount = 0;
+          colChangeAmount = 1;
+        }
         break;
       case "ArrowDown":
-        rowChangeAmount = 1;
-        colChangeAmount = 0;
+        if(rowChangeAmount !== -1) {
+          rowChangeAmount = 1;
+          colChangeAmount = 0;
+        }
         break;
       case "ArrowLeft":
-        rowChangeAmount = 0;
-        colChangeAmount = -1;
+        if(colChangeAmount !== 1) {
+          rowChangeAmount = 0;
+          colChangeAmount = -1;
+        }
         break;
       case "ArrowUp":
-        rowChangeAmount = -1;
-        colChangeAmount = 0;
+        if(rowChangeAmount !== 1) {
+          rowChangeAmount = -1;
+          colChangeAmount = 0;
+        }
         break;
     }
     if(!gameIsInProgress){ startGame() }
