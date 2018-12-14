@@ -1,6 +1,7 @@
 'use strict'
 
-var numberOfRows = 12,
+var score = 0,
+  numberOfRows = 12,
   numberOfColumns = 16,
   snake = [],
   rowChangeAmount = 0,
@@ -29,6 +30,8 @@ function move() {
       } else {
         if(cellInTable(bodyPart['row'], bodyPart['col']).innerHTML === ';') {
           addToSnakeBody('+', -1, -1);
+          score ++;
+          document.getElementById('score').innerHTML = score;
           makeFood();
         }
         if(!!cellInTable(oldRowIndex, oldColIndex)) {
