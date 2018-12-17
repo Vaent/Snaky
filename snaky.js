@@ -11,49 +11,62 @@ var score = 0,
   colChangeAmount = 1,
   newRowChangeAmount,
   newColChangeAmount,
+  oldRowIndex,
+  oldColIndex,
   delayBetweenMoves = 100;
 
 function addToSnakeBody(char, row, col) {
   snake.push({char:char, row:row, col:col});
 }
 
+function checkForDirectionChange() {
+  // update direction only if not reversing
+  if(newRowChangeAmount !== -rowChangeAmount &&
+  newColChangeAmount !== -colChangeAmount) {
+    rowChangeAmount = newRowChangeAmount;
+    colChangeAmount = newColChangeAmount;
+  }
+}
+
+function deleteAndRemake(bodyPart) {
+  if(!!findCellInTable(oldRowIndex, oldColIndex)) {
+    findCellInTable(oldRowIndex, oldColIndex).innerHTML = '';
+  }
+  display(bodyPart);
+}
+
 function display(bodyPart) {
-  cellInTable(bodyPart['row'], bodyPart['col']).innerHTML = bodyPart['char'];
+  findCellInTable(bodyPart['row'], bodyPart['col']).innerHTML = bodyPart['char'];
+}
+
+function findCellInTable(row, column) {
+  return document.getElementById(
+    `r${String(row).padStart(2,'0')}c${String(column).padStart(2,'0')}`
+  );
+}
+
+function increaseScore(amount) {
+  score += amount;
+  document.getElementById('banner').innerHTML = `Score: ${score}`;
+}
+
+function makeFood() {
+  let rowIndex = Math.floor(Math.random() * numberOfRows) + 1;
+  let colIndex = Math.floor(Math.random() * numberOfColumns) + 1;
+  while(findCellInTable(rowIndex, colIndex).innerHTML !== '') {
+    rowIndex = Math.floor(Math.random() * numberOfRows) + 1;
+    colIndex = Math.floor(Math.random() * numberOfColumns) + 1;
+  }
+  findCellInTable(rowIndex, colIndex).innerHTML = ';';
 }
 
 function move() {
   clearTimeout(pendingMove); // ensure there are no overlapping timeouts
-  let oldRowIndex = -1, oldColIndex;
   snake.forEach(function(bodyPart) {
     if(alive) { // after the head dies, the rest of the body doesn't move
-      if(newRowChangeAmount !== -rowChangeAmount &&
-      newColChangeAmount !== -colChangeAmount) {
-        // update direction only if not reversing direction
-        rowChangeAmount = newRowChangeAmount;
-        colChangeAmount = newColChangeAmount;
-      }
-      [oldRowIndex, bodyPart['row']] = [bodyPart['row'], oldRowIndex];
-      [oldColIndex, bodyPart['col']] = [bodyPart['col'], oldColIndex];
-      if(bodyPart['row'] < 0) {
-        bodyPart['row'] = oldRowIndex + rowChangeAmount;
-        bodyPart['col'] = oldColIndex + colChangeAmount;
-      }
-      if(!cellInTable(bodyPart['row'], bodyPart['col']) ||
-      cellInTable(bodyPart['row'], bodyPart['col']).innerHTML === '+') {
-        alive = false;
-        cellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
-      } else {
-        if(cellInTable(bodyPart['row'], bodyPart['col']).innerHTML === ';') {
-          addToSnakeBody('+', -1, -1);
-          score ++;
-          document.getElementById('banner').innerHTML = `Score: ${score}`;
-          makeFood();
-        }
-        if(!!cellInTable(oldRowIndex, oldColIndex)) {
-          cellInTable(oldRowIndex, oldColIndex).innerHTML = '';
-        }
-        display(bodyPart);
-      }
+      checkForDirectionChange();
+      updateIndices(bodyPart);
+      tryToMove(bodyPart);
     }
   });
   if(alive) {
@@ -61,20 +74,10 @@ function move() {
   }
 }
 
-function makeFood() {
-  let rowIndex = Math.floor(Math.random() * numberOfRows) + 1;
-  let colIndex = Math.floor(Math.random() * numberOfColumns) + 1;
-  while(cellInTable(rowIndex, colIndex).innerHTML !== '') {
-    rowIndex = Math.floor(Math.random() * numberOfRows) + 1;
-    colIndex = Math.floor(Math.random() * numberOfColumns) + 1;
-  }
-  cellInTable(rowIndex, colIndex).innerHTML = ';';
-}
-
-function cellInTable(row, col) {
-  return document.getElementById(
-    `r${String(row).padStart(2,'0')}c${String(col).padStart(2,'0')}`
-  );
+function snakeEatsSemicolon() {
+  addToSnakeBody('+', -1, -1);
+  increaseScore(1);
+  makeFood();
 }
 
 function startGame() {
@@ -82,6 +85,30 @@ function startGame() {
   move();
   makeFood();
   gameIsInProgress = true;
+}
+
+function tryToMove(bodyPart) {
+  // check whether the intended space exists and is unoccupied
+  if(!findCellInTable(bodyPart['row'], bodyPart['col']) ||
+  findCellInTable(bodyPart['row'], bodyPart['col']).innerHTML === '+') {
+    alive = false;
+    findCellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
+  } else {
+    if(findCellInTable(bodyPart['row'], bodyPart['col']).innerHTML === ';') {
+      snakeEatsSemicolon();
+    }
+    deleteAndRemake(bodyPart);
+  }
+}
+
+function updateIndices(bodyPart) {
+  if(bodyPart === snake[0]) {
+    [oldRowIndex, bodyPart['row']] = [bodyPart['row'], (bodyPart['row'] + rowChangeAmount)];
+    [oldColIndex, bodyPart['col']] = [bodyPart['col'], (bodyPart['col'] + colChangeAmount)];
+  } else {
+    [oldRowIndex, bodyPart['row']] = [bodyPart['row'], oldRowIndex];
+    [oldColIndex, bodyPart['col']] = [bodyPart['col'], oldColIndex];
+  }
 }
 
 (function() {
