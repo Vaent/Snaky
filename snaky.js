@@ -9,8 +9,8 @@ var score = 0,
   snake = [],
   rowChangeAmount = 0,
   colChangeAmount = 1,
-  newRowChangeAmount,
-  newColChangeAmount,
+  newRowChangeAmount = 0,
+  newColChangeAmount = 1,
   oldRowIndex,
   oldColIndex,
   delayBetweenMoves = 100;
@@ -62,9 +62,9 @@ function makeFood() {
 
 function move() {
   clearTimeout(pendingMove); // ensure there are no overlapping timeouts
+  checkForDirectionChange();
   snake.forEach(function(bodyPart) {
     if(alive) { // after the head dies, the rest of the body doesn't move
-      checkForDirectionChange();
       updateIndices(bodyPart);
       tryToMove(bodyPart);
     }
@@ -133,7 +133,7 @@ function updateIndices(bodyPart) {
     }
     if(!gameIsInProgress) {
       startGame();
-    } else if(newRowChangeAmount !== Math.abs(rowChangeAmount)) {
+    } else if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
       move(); // if direction has changed, don't wait for timeout
     }
   });
