@@ -165,7 +165,7 @@ function createGameView() {
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
     createGameView();
-    avatar = new Snake();
+    avatar = new Comet();
     avatar.createDefaultBody();
     avatar.body.forEach(function(bodyPart){ avatar.display(bodyPart) });
     createKeyListener();
