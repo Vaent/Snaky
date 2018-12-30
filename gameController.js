@@ -149,6 +149,7 @@ function keyAction(event) {
 // functions to set up the game:
 
 function createGameView() {
+  document.getElementById('gameView').innerHTML = '';
   for(let r=1; r<=numberOfRows; r++) {
     let htmlToAdd = ''
     htmlToAdd += '<tr>';
@@ -162,12 +163,33 @@ function createGameView() {
   }
 }
 
+function prepareGame() {
+  createGameView();
+  document.getElementById("instructions").innerHTML = avatar.instructions;
+  avatar.createDefaultBody();
+  avatar.body.forEach(function(bodyPart){ avatar.display(bodyPart) });
+}
+
+function selectComet() {
+  if(!gameIsInProgress) {
+    avatar = new Comet;
+    document.getElementById("banner").innerHTML = "Comet";
+    prepareGame();
+  }
+}
+
+function selectSnaky() {
+  if(!gameIsInProgress) {
+    avatar = new Snake;
+    document.getElementById("banner").innerHTML = "Snaky";
+    prepareGame();
+  }
+}
+
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
-    createGameView();
-    avatar = new Comet();
-    avatar.createDefaultBody();
-    avatar.body.forEach(function(bodyPart){ avatar.display(bodyPart) });
+    avatar = new Snake();
+    prepareGame();
     createKeyListener();
   });
 })();

@@ -2,6 +2,7 @@
 
 function Comet() {
   this.body = [];
+  this.instructions = "Press any key to start.<br>Control the comet's direction using the arrow keys.<br>Absorb asteroids to increase your score and grow the comet.<p>The game ends when the comet hits a wall or its own tail.</p>";
 }
 
 Comet.prototype.addToCometBody = function(row, col) {
@@ -40,7 +41,7 @@ Comet.prototype.createDefaultBody = function() {
 
 Comet.prototype.die = function() {
   alive = false;
-  findCellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
+  findCellInTable(oldRowIndex, oldColIndex).style.backgroundColor = 'red';
 }
 
 Comet.prototype.display = function(bodyPart) {

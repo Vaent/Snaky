@@ -6,22 +6,16 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <h1 id="banner">Comet</h1>
-    <div id="instructions" hidden>
-      Press any key to start.
-      <br>
-      Control the snake's direction using the arrow keys.
-      <br>
-      Eat the semicolons to increase your score and grow the snake.
-      <p>
-        The game ends when the snake hits a wall or its own tail.
-      </p>
-    </div>
+    <h1 id="banner">Snaky</h1>
+    <div id="instructions" hidden></div>
     <p id="menu">
       <button onclick=showInstructions()>Instructions</button>
       <button onclick=hideInstructions()>Hide instructions</button>
+      <button onclick=selectComet()>Play Comet</button>
+      <button onclick=selectSnaky()>Play Snaky</button>
     </p>
     <table><tbody id='gameView'></tbody></table>
+    <script src="snakeManager.js"></script>
     <script src="cometManager.js"></script>
     <script src="gameController.js"></script>
     <script src="display.js"></script>
