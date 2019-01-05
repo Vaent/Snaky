@@ -1,16 +1,16 @@
 'use strict'
 
 var avatar,
-  score = 0,
-  gameIsInProgress = false,
-  alive = true,
+  score,
+  gameIsInProgress,
+  alive,
   pendingMove,
   numberOfRows = 12,
   numberOfColumns = 16,
-  rowChangeAmount = 0,
-  colChangeAmount = 1,
-  newRowChangeAmount = 0,
-  newColChangeAmount = 1,
+  rowChangeAmount,
+  colChangeAmount,
+  newRowChangeAmount,
+  newColChangeAmount,
   oldRowIndex,
   oldColIndex,
   delayBetweenMoves = 100,
@@ -150,31 +150,28 @@ function keyAction(event) {
 // functions to set up the game:
 
 function prepareGame() {
+  documentBanner.innerHTML = avatar.constructor.name;
   createGameView();
   avatar.createDefaultBody();
   avatar.body.forEach(function(bodyPart){ avatar.display(bodyPart) });
 }
 
-function selectComet() {
-  if(!gameIsInProgress) {
-    avatar = new Comet;
-    documentBanner.innerHTML = "Comet";
-    prepareGame();
-  }
-}
-
-function selectSnaky() {
-  if(!gameIsInProgress) {
-    avatar = new Snake;
-    documentBanner.innerHTML = "Snaky";
-    prepareGame();
-  }
+function resetGame() {
+  clearTimeout(pendingMove);
+  rowChangeAmount = 0;
+  colChangeAmount = 1;
+  newRowChangeAmount = 0;
+  newColChangeAmount = 1;
+  score = 0;
+  gameIsInProgress = false;
+  alive = true;
+  avatar.body = [];
+  prepareGame();
 }
 
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
-    avatar = new Snake();
-    prepareGame();
+    selectSnaky();
     createKeyListener();
   });
 })();
