@@ -13,7 +13,8 @@ var avatar,
   newColChangeAmount = 1,
   oldRowIndex,
   oldColIndex,
-  delayBetweenMoves = 100;
+  delayBetweenMoves = 100,
+  documentBanner = document.getElementById("banner");
 
 function cellExists(rowIndex, colIndex) {
   return !!findCellInTable(rowIndex, colIndex);
@@ -53,7 +54,7 @@ function getRandomEmptyCell() {
 
 function increaseScore(amount) {
   score += amount;
-  document.getElementById('banner').innerHTML = `Score: ${score}`;
+  documentBanner.innerHTML = `Score: ${score}`;
 }
 
 function makeFood() {
@@ -71,7 +72,7 @@ function move() {
 }
 
 function startGame() {
-  document.getElementById('banner').innerHTML = `Score: ${score}`;
+  documentBanner.innerHTML = `Score: ${score}`;
   move();
   makeFood();
   gameIsInProgress = true;
@@ -148,24 +149,8 @@ function keyAction(event) {
 
 // functions to set up the game:
 
-function createGameView() {
-  document.getElementById('gameView').innerHTML = '';
-  for(let r=1; r<=numberOfRows; r++) {
-    let htmlToAdd = ''
-    htmlToAdd += '<tr>';
-    for(let c=1; c<=numberOfColumns; c++) {
-      let row2digit = String(r).padStart(2,'0');
-      let col2digit = String(c).padStart(2,'0');
-      htmlToAdd += `<td id='r${row2digit}c${col2digit}'></td>`;
-    }
-    htmlToAdd += '</tr>';
-    document.getElementById('gameView').innerHTML += htmlToAdd;
-  }
-}
-
 function prepareGame() {
   createGameView();
-  document.getElementById("instructions").innerHTML = avatar.instructions;
   avatar.createDefaultBody();
   avatar.body.forEach(function(bodyPart){ avatar.display(bodyPart) });
 }
@@ -173,7 +158,7 @@ function prepareGame() {
 function selectComet() {
   if(!gameIsInProgress) {
     avatar = new Comet;
-    document.getElementById("banner").innerHTML = "Comet";
+    documentBanner.innerHTML = "Comet";
     prepareGame();
   }
 }
@@ -181,7 +166,7 @@ function selectComet() {
 function selectSnaky() {
   if(!gameIsInProgress) {
     avatar = new Snake;
-    document.getElementById("banner").innerHTML = "Snaky";
+    documentBanner.innerHTML = "Snaky";
     prepareGame();
   }
 }

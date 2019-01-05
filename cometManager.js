@@ -2,7 +2,7 @@
 
 function Comet() {
   this.body = [];
-  this.instructions = "Press any key to start.<br>Control the comet's direction using the arrow keys.<br>Absorb asteroids to increase your score and grow the comet.<p>The game ends when the comet hits a wall or its own tail.</p>";
+  this.instructions = "<p>Press any key to start.<br>Control the comet's direction using the arrow keys.<br>Absorb asteroids to increase your score and grow the comet.</p><p>The game ends when the comet hits a wall or its own tail.</p>";
 }
 
 Comet.prototype.addToCometBody = function(row, col) {
