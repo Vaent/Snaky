@@ -156,6 +156,7 @@ function keyAction(event) {
 
 function prepareGame() {
   documentBanner.innerHTML = avatar.constructor.name;
+  document.title = avatar.constructor.name;
   createGameView();
   avatar.createDefaultBody();
   avatar.body.forEach(function(bodyPart){ avatar.display(bodyPart) });
