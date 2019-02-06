@@ -53,7 +53,17 @@ Comet.prototype.display = function(bodyPart) {
 }
 
 Comet.prototype.hitBodyPartAt = function(rowIndex, colIndex) {
-  this.die();
+  let cutPosition = this.body.indexOf(
+    this.body.find(bodyPart => (
+      bodyPart.row === rowIndex && bodyPart.col === colIndex && bodyPart.hue !== "rgb(0,0,160)"
+    ))
+  );
+  while (this.body.length > cutPosition) {
+    let bodyPart = this.body[cutPosition];
+    findCellInTable(bodyPart.row, bodyPart.col).style.backgroundColor = '';
+    this.body.splice(cutPosition,1);
+  }
+  deleteAndRemake(this.body[0]);
 }
 
 Comet.prototype.hitWall = function() {
