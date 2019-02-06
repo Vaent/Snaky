@@ -39,7 +39,7 @@ Snaky.prototype.die = function() {
 }
 
 Snaky.prototype.display = function(bodyPart) {
-  findCellInTable(bodyPart['row'], bodyPart['col']).innerHTML = bodyPart['char'];
+  findCellInTable(bodyPart.row, bodyPart.col).innerHTML = bodyPart.char;
 }
 
 Snaky.prototype.hitBodyPartAt = function(rowIndex, colIndex) {

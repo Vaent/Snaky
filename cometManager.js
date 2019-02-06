@@ -6,7 +6,11 @@ function Comet() {
 }
 
 Comet.prototype.addToCometBody = function(row, col) {
-  this.body.push({strength:this.body.length, row:row, col:col});
+  this.body.push({row:row, col:col});
+  this.body.forEach(bodyPart => {
+    let strength = 180 * this.body.indexOf(bodyPart) / this.body.length;
+    bodyPart.hue = `rgb(${strength},${strength},160)`;
+  });
 }
 
 Comet.prototype.cellIsOccupied = function(rowIndex, colIndex) {
@@ -45,9 +49,7 @@ Comet.prototype.die = function() {
 }
 
 Comet.prototype.display = function(bodyPart) {
-  let shade = `${Math.min(99, 10 * bodyPart['strength'])}`.padStart(2,'0');
-  let hue = `#${shade}${shade}90`;
-  findCellInTable(bodyPart['row'], bodyPart['col']).style.backgroundColor = hue;
+  findCellInTable(bodyPart.row, bodyPart.col).style.backgroundColor = bodyPart.hue;
 }
 
 Comet.prototype.hitBodyPartAt = function(rowIndex, colIndex) {

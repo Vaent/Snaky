@@ -80,12 +80,12 @@ function startGame() {
 
 function tryToMove(bodyPart) {
   // check whether the intended space exists and is unoccupied
-  if(!cellExists(bodyPart['row'], bodyPart['col'])) {
+  if(!cellExists(bodyPart.row, bodyPart.col)) {
     avatar.hitWall();
-  } else if(avatar.cellIsOccupied(bodyPart['row'], bodyPart['col'])) {
-    avatar.hitBodyPartAt(bodyPart['row'], bodyPart['col']);
+  } else if(avatar.cellIsOccupied(bodyPart.row, bodyPart.col)) {
+    avatar.hitBodyPartAt(bodyPart.row, bodyPart.col);
   } else {
-    avatar.checkForFoodAt(bodyPart['row'], bodyPart['col']);
+    avatar.checkForFoodAt(bodyPart.row, bodyPart.col);
     deleteAndRemake(bodyPart);
   }
 }
@@ -101,11 +101,11 @@ function updateBodyPosition() {
 
 function updateIndices(bodyPart) {
   if(bodyPart === avatar.body[0]) {
-    [oldRowIndex, bodyPart['row']] = [bodyPart['row'], (bodyPart['row'] + rowChangeAmount)];
-    [oldColIndex, bodyPart['col']] = [bodyPart['col'], (bodyPart['col'] + colChangeAmount)];
+    [oldRowIndex, bodyPart.row] = [bodyPart.row, (bodyPart.row + rowChangeAmount)];
+    [oldColIndex, bodyPart.col] = [bodyPart.col, (bodyPart.col + colChangeAmount)];
   } else {
-    [oldRowIndex, bodyPart['row']] = [bodyPart['row'], oldRowIndex];
-    [oldColIndex, bodyPart['col']] = [bodyPart['col'], oldColIndex];
+    [oldRowIndex, bodyPart.row] = [bodyPart.row, oldRowIndex];
+    [oldColIndex, bodyPart.col] = [bodyPart.col, oldColIndex];
   }
 }
 
