@@ -29,6 +29,11 @@ function checkForDirectionChange() {
   }
 }
 
+function decreaseScore(amount) {
+  score -= amount;
+  documentBanner.innerHTML = `Score: ${score}`;
+}
+
 function deleteAndRemake(bodyPart) {
   if(!!findCellInTable(oldRowIndex, oldColIndex)) {
     avatar.clearCell(oldRowIndex, oldColIndex);
