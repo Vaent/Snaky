@@ -24,7 +24,11 @@ Comet.prototype.checkForFoodAt = function(rowIndex, colIndex) {
 }
 
 Comet.prototype.clearCell = function(rowIndex, colIndex) {
-  findCellInTable(rowIndex, colIndex).style.backgroundColor = '';
+  this.colourCell(rowIndex, colIndex, '');
+}
+
+Comet.prototype.colourCell = function(rowIndex, colIndex, colour) {
+  findCellInTable(rowIndex, colIndex).style.backgroundColor = colour;
 }
 
 Comet.prototype.cometEatsAsteroid = function() {
@@ -42,25 +46,45 @@ Comet.prototype.createDefaultBody = function() {
 
 Comet.prototype.die = function() {
   alive = false;
-  findCellInTable(oldRowIndex, oldColIndex).style.backgroundColor = 'red';
+  this.colourCell(oldRowIndex, oldColIndex, 'red');
+  this.disintegrate( this.body.splice(1) );
+}
+
+Comet.prototype.disintegrate = function(chunkOfTail) {
+  let bodyPart = chunkOfTail.shift();
+  // if the comet recently ate, a bodyPart may not have been displayed yet
+  if(!!findCellInTable(bodyPart.row, bodyPart.col)) {
+    this.colourCell(bodyPart.row, bodyPart.col, 'red');
+    setTimeout(
+      () => {this.clearCell(bodyPart.row, bodyPart.col)},
+      delayBetweenMoves / 1.5
+    );
+  }
+  if(chunkOfTail.length > 0) {
+    setTimeout(
+      () => {this.disintegrate(chunkOfTail)},
+      delayBetweenMoves / 2
+    )
+  }
 }
 
 Comet.prototype.display = function(bodyPart) {
-  findCellInTable(bodyPart.row, bodyPart.col).style.backgroundColor = bodyPart.hue;
+  this.colourCell(bodyPart.row, bodyPart.col, bodyPart.hue);
 }
 
 Comet.prototype.hitBodyPartAt = function(rowIndex, colIndex) {
   let cutPosition = this.body.indexOf(
-    this.body.find(bodyPart => (
-      bodyPart.row === rowIndex && bodyPart.col === colIndex && bodyPart.hue !== "rgb(0,0,160)"
+    this.body.slice(1).find(bodyPart => (
+      bodyPart.row === rowIndex && bodyPart.col === colIndex
     ))
   );
-  while (this.body.length > cutPosition) {
-    let bodyPart = this.body[cutPosition];
-    findCellInTable(bodyPart.row, bodyPart.col).style.backgroundColor = '';
-    this.body.splice(cutPosition,1);
+  // For a long tail, the head may hit the 'dead' part before it disintegrates
+  // Hitting an already-dead section of tail would give cutPosition = -1 as that
+  // cell is no longer referenced in the 'live' body
+  if(cutPosition > 0) {
+    this.disintegrate( this.body.splice(cutPosition) );
+    this.updateHues();
   }
-  this.updateHues();
   deleteAndRemake(this.body[0]);
 }
 
@@ -69,7 +93,7 @@ Comet.prototype.hitWall = function() {
 }
 
 Comet.prototype.putFoodInCell = function(rowIndex, colIndex) {
-  findCellInTable(rowIndex, colIndex).style.backgroundColor = 'brown';
+  this.colourCell(rowIndex, colIndex, 'brown');
 }
 
 Comet.prototype.updateHues = function() {
