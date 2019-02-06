@@ -7,10 +7,7 @@ function Comet() {
 
 Comet.prototype.addToCometBody = function(row, col) {
   this.body.push({row:row, col:col});
-  this.body.forEach(bodyPart => {
-    let strength = 180 * this.body.indexOf(bodyPart) / this.body.length;
-    bodyPart.hue = `rgb(${strength},${strength},160)`;
-  });
+  this.updateHues();
 }
 
 Comet.prototype.cellIsOccupied = function(rowIndex, colIndex) {
@@ -63,6 +60,7 @@ Comet.prototype.hitBodyPartAt = function(rowIndex, colIndex) {
     findCellInTable(bodyPart.row, bodyPart.col).style.backgroundColor = '';
     this.body.splice(cutPosition,1);
   }
+  this.updateHues();
   deleteAndRemake(this.body[0]);
 }
 
@@ -72,4 +70,11 @@ Comet.prototype.hitWall = function() {
 
 Comet.prototype.putFoodInCell = function(rowIndex, colIndex) {
   findCellInTable(rowIndex, colIndex).style.backgroundColor = 'brown';
+}
+
+Comet.prototype.updateHues = function() {
+  this.body.forEach(bodyPart => {
+    let strength = 180 * this.body.indexOf(bodyPart) / this.body.length;
+    bodyPart.hue = `rgb(${strength},${strength},160)`;
+  });
 }
