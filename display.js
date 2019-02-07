@@ -1,12 +1,17 @@
 'use strict'
 
-var gameViewTable = document.getElementById("gameView"),
+var cellCSS = document.createElement('style'),
+  gameViewTable = document.getElementById("gameView"),
   instructionsDiv = document.getElementById("instructions"),
   instructionsHideButton = document.getElementById("hideInstructions"),
   instructionsShowButton = document.getElementById("showInstructions"),
   settingsDiv = document.getElementById("settings"),
   settingsHideButton = document.getElementById("hideSettings"),
   settingsShowButton = document.getElementById("showSettings");
+
+function affixCellCSS() {
+  document.body.appendChild(cellCSS);
+}
 
 function createGameView() {
   gameViewTable.innerHTML = '';
@@ -44,6 +49,11 @@ function hideSettings() {
   settingsHideButton.setAttribute("hidden","");
   settingsShowButton.removeAttribute("hidden");
   createKeyListener();
+}
+
+function setCellSize(newSize) {
+  if(newSize < 1) {newSize = 1}
+  cellCSS.innerHTML = `td { width: ${newSize}em; height: ${newSize}em }`
 }
 
 function showSettings() {

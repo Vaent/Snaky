@@ -177,6 +177,8 @@ function resetGame() {
 
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
+    affixCellCSS();
+    setCellSize(1.2);
     selectSnaky();
     createKeyListener();
   });
