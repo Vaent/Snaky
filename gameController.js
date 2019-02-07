@@ -105,6 +105,7 @@ function move() {
 }
 
 function startGame() {
+  if(rowChangeAmount === colChangeAmount) {changeDirectionToRight()}
   documentBanner.innerHTML = `Score: ${score}`;
   let buttons = document.getElementsByTagName('button');
   for(let i=0; i<buttons.length; i++) {
@@ -189,22 +190,21 @@ function keyAction(event) {
 
 function tapAction(event) {
   let gameViewDimensions = gameViewTable.getBoundingClientRect();
-  let gameViewCentreX = (gameViewDimensions.right + gameViewDimensions.left) / 2;
-  let gameViewCentreY = (gameViewDimensions.top + gameViewDimensions.bottom) / 2;
 
-  let xFromCentre =
-    (event.changedTouches[0].clientX - gameViewCentreX) / gameViewDimensions.width;
-  let yFromCentre =
-    (event.changedTouches[0].clientY - gameViewCentreY) / gameViewDimensions.height;
-
-  if(Math.abs(xFromCentre) > Math.abs(yFromCentre)) {
-    xFromCentre > 0 ? changeDirectionToRight() : changeDirectionToLeft()
+  if(rowChangeAmount === 0) {
+    let snakeHeadPosition = cellSize * (avatar.body[0].row - 0.5) + gameViewDimensions.top;
+    let distanceFromHead = (event.changedTouches[0].clientY - snakeHeadPosition);
+    distanceFromHead > 0 ? changeDirectionToDown() : changeDirectionToUp();
   } else {
-    yFromCentre > 0 ? changeDirectionToDown() : changeDirectionToUp()
+    let snakeHeadPosition = cellSize * (avatar.body[0].col - 0.5) + gameViewDimensions.left;
+    let distanceFromHead = (event.changedTouches[0].clientX - snakeHeadPosition);
+    distanceFromHead > 0 ? changeDirectionToRight() : changeDirectionToLeft();
   }
 
   if(!gameIsInProgress) {
-    startGame();
+    if(event.changedTouches[0].clientY > gameViewDimensions.top) {
+      startGame();
+    }
   } else if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
     move(); // if direction has changed, don't wait for timeout
   }
@@ -223,10 +223,6 @@ function prepareGame() {
 
 function resetGame() {
   clearTimeout(pendingMove);
-  rowChangeAmount = 0;
-  colChangeAmount = 1;
-  newRowChangeAmount = 0;
-  newColChangeAmount = 1;
   score = 0;
   gameIsInProgress = false;
   alive = true;

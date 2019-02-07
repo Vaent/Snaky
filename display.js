@@ -1,6 +1,7 @@
 'use strict'
 
 var cellCSS = document.createElement('style'),
+  cellSize,
   documentMenu = document.getElementById("menu"),
   gameViewTable = document.getElementById("gameView"),
   instructionsDiv = document.getElementById("instructions"),
@@ -61,12 +62,12 @@ function scaleGameView() {
   );
   let maxRowHeight = Math.floor(maxHeightOfTable / numberOfRows);
   let maxColWidth = Math.floor(window.innerWidth / numberOfColumns);
-  let sizeLimit = Math.min(maxRowHeight, maxColWidth);
-  setCellSize(sizeLimit - 5); // target cell size reduced to allow for borders
+  cellSize = Math.min(maxRowHeight, maxColWidth) - 5; // target cell size reduced to allow for borders
+  scaleTableCells();
 }
 
-function setCellSize(newSize) {
-  cellCSS.innerHTML = `td { width: ${newSize}px; height: ${newSize}px; font-size: ${newSize}px }`
+function scaleTableCells() {
+  cellCSS.innerHTML = `td { width: ${cellSize}px; height: ${cellSize}px; font-size: ${cellSize}px }`
 }
 
 function showInstructions() {
