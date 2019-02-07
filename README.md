@@ -12,7 +12,15 @@ The gameController script sets up a function called `move()`. Originally, this f
 
 An IIFE (anonymous function which runs automatically without being called) in the gameController sets up an eventListener which is triggered when the browser has finished loading the page. It then sets the game style to 'Snaky' and sets up a new event listener which detects key presses while the game is active, updating the direction of movement if an arrow key is pressed.
 
-Whenever the game style is set to 'Snaky' or 'Comet', the game is reset. This includes clearing any leftover details of previous games, creating the snake/comet, and setting up a new HTML table* (doing it this way allows the table dimensions to be changed easily - in future the settings may include options for resizing the game window). An 'avatar' is created from the snakeManager or cometManager scripts, both of which have equivalent functions to handle tasks like displaying body parts and food, so that they can be given distinct characteristics while sharing the general mechanics managed by the gameController script.
+Whenever the game style is set to 'Snaky' or 'Comet', the game is reset. This includes clearing any leftover details of previous games, creating the snake/comet, and setting up a new HTML table* (doing it this way allows the number of rows & columns in the table to be changed easily - in future the settings may include options for resizing the table). An 'avatar' is created from the snakeManager or cometManager scripts, both of which have equivalent functions to handle tasks like displaying body parts and food, so that they can be given distinct characteristics while sharing the general mechanics managed by the gameController script.
+
+#### Controls/user input
+
+Originally the game only used the 4 arrow keys (you can press any key to start, but it's easiest to start by pressing an 'action' key and these are hard-coded as the arrows, which are the only keys that have any effect on the game once begun).
+
+Touch screen input is now also supported: the snake will turn through a right angle toward the location that was tapped. The game is also started by tapping, but a tap above the game screen will not be registered so that the menu buttons can be used without accidentally starting the game.
+
+All key presses and screen taps are ignored by the game while the instructions/settings are visible, as those take up a large portion of the screen. This is achieved by deleting the eventListeners and recreating them at the appropriate moments. Input is still registered by other components, such as HTML buttons, so the settings can be changed and the menu closed afterwards.
 
 #### Moving the snake
 
