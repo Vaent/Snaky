@@ -47,6 +47,14 @@ function findCellInTable(rowIndex, colIndex) {
   );
 }
 
+function gameOver() {
+  alive = false;
+  let buttons = document.getElementsByTagName('button');
+  for(let i=0; i<buttons.length; i++) {
+    buttons[i].disabled=false;
+  }
+}
+
 function getRandomEmptyCell() {
   let rowIndex = Math.floor(Math.random() * numberOfRows) + 1;
   let colIndex = Math.floor(Math.random() * numberOfColumns) + 1;
@@ -78,6 +86,10 @@ function move() {
 
 function startGame() {
   documentBanner.innerHTML = `Score: ${score}`;
+  let buttons = document.getElementsByTagName('button');
+  for(let i=0; i<buttons.length; i++) {
+    buttons[i].disabled=true;
+  }
   move();
   makeFood();
   gameIsInProgress = true;

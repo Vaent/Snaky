@@ -34,8 +34,8 @@ Snaky.prototype.createDefaultBody = function() {
 }
 
 Snaky.prototype.die = function() {
-  alive = false;
   findCellInTable(oldRowIndex, oldColIndex).innerHTML = 'x';
+  gameOver();
 }
 
 Snaky.prototype.display = function(bodyPart) {
