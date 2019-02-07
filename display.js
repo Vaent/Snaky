@@ -39,6 +39,7 @@ function hideInstructions() {
   instructionsHideButton.hidden = true;
   instructionsShowButton.hidden = false;
   createKeyListener();
+  createScreenTapListener();
 }
 
 function hideSettings() {
@@ -46,6 +47,7 @@ function hideSettings() {
   settingsHideButton.hidden = true;
   settingsShowButton.hidden = false;
   createKeyListener();
+  createScreenTapListener();
 }
 
 function scaleGameView() {
@@ -74,6 +76,7 @@ function showInstructions() {
   instructionsShowButton.hidden = true;
   hideSettings();
   deleteKeyListener();
+  deleteScreenTapListener();
 }
 
 function showSettings() {
@@ -82,4 +85,5 @@ function showSettings() {
   settingsShowButton.hidden = true;
   hideInstructions();
   deleteKeyListener();
+  deleteScreenTapListener();
 }

@@ -20,6 +20,26 @@ function cellExists(rowIndex, colIndex) {
   return !!findCellInTable(rowIndex, colIndex);
 }
 
+function changeDirectionToDown() {
+  newRowChangeAmount = 1;
+  newColChangeAmount = 0;
+}
+
+function changeDirectionToLeft() {
+  newRowChangeAmount = 0;
+  newColChangeAmount = -1;
+}
+
+function changeDirectionToRight() {
+  newRowChangeAmount = 0;
+  newColChangeAmount = 1;
+}
+
+function changeDirectionToUp() {
+  newRowChangeAmount = -1;
+  newColChangeAmount = 0;
+}
+
 function checkForDirectionChange() {
   // update direction only if not reversing
   if(newRowChangeAmount !== -rowChangeAmount &&
@@ -127,35 +147,62 @@ function updateIndices(bodyPart) {
 }
 
 
-// functions relating to keyboard controls:
+// functions relating to keyboard/touchscreen controls:
 
 function createKeyListener() {
   document.addEventListener("keydown", keyAction);
+}
+
+function createScreenTapListener() {
+  document.addEventListener("touchstart", tapAction);
 }
 
 function deleteKeyListener() {
   document.removeEventListener("keydown", keyAction);
 }
 
+function deleteScreenTapListener() {
+  document.removeEventListener("touchstart", tapAction);
+}
+
 function keyAction(event) {
   switch(event.key) {
-    case "ArrowRight":
-      newRowChangeAmount = 0;
-      newColChangeAmount = 1;
-      break;
     case "ArrowDown":
-      newRowChangeAmount = 1;
-      newColChangeAmount = 0;
+      changeDirectionToDown();
       break;
     case "ArrowLeft":
-      newRowChangeAmount = 0;
-      newColChangeAmount = -1;
+      changeDirectionToLeft();
+      break;
+    case "ArrowRight":
+      changeDirectionToRight();
       break;
     case "ArrowUp":
-      newRowChangeAmount = -1;
-      newColChangeAmount = 0;
+      changeDirectionToUp();
       break;
   }
+  if(!gameIsInProgress) {
+    startGame();
+  } else if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
+    move(); // if direction has changed, don't wait for timeout
+  }
+}
+
+function tapAction(event) {
+  let gameViewDimensions = gameViewTable.getBoundingClientRect();
+  let gameViewCentreX = (gameViewDimensions.right + gameViewDimensions.left) / 2;
+  let gameViewCentreY = (gameViewDimensions.top + gameViewDimensions.bottom) / 2;
+
+  let xFromCentre =
+    (event.changedTouches[0].clientX - gameViewCentreX) / gameViewDimensions.width;
+  let yFromCentre =
+    (event.changedTouches[0].clientY - gameViewCentreY) / gameViewDimensions.height;
+
+  if(Math.abs(xFromCentre) > Math.abs(yFromCentre)) {
+    xFromCentre > 0 ? changeDirectionToRight() : changeDirectionToLeft()
+  } else {
+    yFromCentre > 0 ? changeDirectionToDown() : changeDirectionToUp()
+  }
+
   if(!gameIsInProgress) {
     startGame();
   } else if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
@@ -192,6 +239,7 @@ function resetGame() {
     affixCellCSS();
     selectSnaky();
     createKeyListener();
+    createScreenTapListener();
     createResizeListener();
   });
 })();
