@@ -29,25 +29,16 @@ function createGameView() {
 }
 
 function hideInstructions() {
-  instructionsDiv.setAttribute("hidden","");
-  instructionsHideButton.setAttribute("hidden","");
-  instructionsShowButton.removeAttribute("hidden");
+  instructionsDiv.hidden = true;
+  instructionsHideButton.hidden = true;
+  instructionsShowButton.hidden = false;
   createKeyListener();
 }
 
-function showInstructions() {
-  instructionsDiv.innerHTML = avatar.instructions;
-  instructionsDiv.removeAttribute("hidden");
-  instructionsHideButton.removeAttribute("hidden");
-  instructionsShowButton.setAttribute("hidden","");
-  hideSettings();
-  deleteKeyListener();
-}
-
 function hideSettings() {
-  settingsDiv.setAttribute("hidden","");
-  settingsHideButton.setAttribute("hidden","");
-  settingsShowButton.removeAttribute("hidden");
+  settingsDiv.hidden = true;
+  settingsHideButton.hidden = true;
+  settingsShowButton.hidden = false;
   createKeyListener();
 }
 
@@ -56,10 +47,19 @@ function setCellSize(newSize) {
   cellCSS.innerHTML = `td { width: ${newSize}em; height: ${newSize}em }`
 }
 
+function showInstructions() {
+  instructionsDiv.innerHTML = avatar.instructions;
+  instructionsDiv.hidden = false;
+  instructionsHideButton.hidden = false;
+  instructionsShowButton.hidden = true;
+  hideSettings();
+  deleteKeyListener();
+}
+
 function showSettings() {
-  settingsDiv.removeAttribute("hidden");
-  settingsHideButton.removeAttribute("hidden");
-  settingsShowButton.setAttribute("hidden","");
+  settingsDiv.hidden = false;
+  settingsHideButton.hidden = false;
+  settingsShowButton.hidden = true;
   hideInstructions();
   deleteKeyListener();
 }
