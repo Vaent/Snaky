@@ -49,7 +49,7 @@ function hideSettings() {
 }
 
 function scaleGameView() {
-  let spaceForTable = (
+  let maxHeightOfTable = (
     window.innerHeight
     - documentBanner.clientHeight
     - parseInt(getComputedStyle(documentBanner).getPropertyValue('margin-top'), 10)
@@ -57,8 +57,10 @@ function scaleGameView() {
     - documentMenu.clientHeight
     - parseInt(getComputedStyle(documentMenu).getPropertyValue('margin-bottom'), 10)
   );
-  let rowheight = Math.floor(spaceForTable / numberOfRows);
-  setCellSize(rowheight - 5); // target row height reduced to allow for borders
+  let maxRowHeight = Math.floor(maxHeightOfTable / numberOfRows);
+  let maxColWidth = Math.floor(window.innerWidth / numberOfColumns);
+  let sizeLimit = Math.min(maxRowHeight, maxColWidth);
+  setCellSize(sizeLimit - 5); // target cell size reduced to allow for borders
 }
 
 function setCellSize(newSize) {
