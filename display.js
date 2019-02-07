@@ -1,6 +1,7 @@
 'use strict'
 
 var cellCSS = document.createElement('style'),
+  documentMenu = document.getElementById("menu"),
   gameViewTable = document.getElementById("gameView"),
   instructionsDiv = document.getElementById("instructions"),
   instructionsHideButton = document.getElementById("hideInstructions"),
@@ -26,6 +27,11 @@ function createGameView() {
     htmlToAdd += '</tr>';
     gameViewTable.innerHTML += htmlToAdd;
   }
+  scaleGameView();
+}
+
+function createResizeListener() {
+  window.addEventListener('resize', scaleGameView);
 }
 
 function hideInstructions() {
@@ -42,9 +48,21 @@ function hideSettings() {
   createKeyListener();
 }
 
+function scaleGameView() {
+  let spaceForTable = (
+    window.innerHeight
+    - documentBanner.clientHeight
+    - parseInt(getComputedStyle(documentBanner).getPropertyValue('margin-top'), 10)
+    - parseInt(getComputedStyle(documentBanner).getPropertyValue('margin-bottom'), 10)
+    - documentMenu.clientHeight
+    - parseInt(getComputedStyle(documentMenu).getPropertyValue('margin-bottom'), 10)
+  );
+  let rowheight = Math.floor(spaceForTable / numberOfRows);
+  setCellSize(rowheight - 5); // target row height reduced to allow for borders
+}
+
 function setCellSize(newSize) {
-  if(newSize < 1) {newSize = 1}
-  cellCSS.innerHTML = `td { width: ${newSize}em; height: ${newSize}em }`
+  cellCSS.innerHTML = `td { width: ${newSize}px; height: ${newSize}px; font-size: ${newSize}px }`
 }
 
 function showInstructions() {
