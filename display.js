@@ -67,7 +67,7 @@ function scaleGameView() {
 }
 
 function scaleTableCells() {
-  cellCSS.innerHTML = `td { width: ${cellSize}px; height: ${cellSize}px; font-size: ${cellSize}px }`
+  cellCSS.innerHTML = `td { width: ${cellSize}px; height: ${cellSize}px; font-size: ${0.8 * cellSize}px }`
 }
 
 function showInstructions() {

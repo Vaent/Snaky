@@ -3,6 +3,9 @@ body {
   font-size: 1.5em;
   text-align: center
 }
+button {
+  font-size: 1em
+}
 div {
   border-bottom: 1px solid grey;
   border-top: 1px solid grey;
@@ -12,4 +15,7 @@ table {
   border: 2px solid black;
   margin-left: auto;
   margin-right: auto
+}
+td {
+  padding: 0
 }

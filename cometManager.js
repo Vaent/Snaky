@@ -46,8 +46,8 @@ Comet.prototype.createDefaultBody = function() {
 
 Comet.prototype.die = function() {
   this.colourCell(oldRowIndex, oldColIndex, 'red');
-  this.disintegrate( this.body.splice(1) );
   gameOver();
+  this.disintegrate( this.body.splice(1) );
 }
 
 Comet.prototype.disintegrate = function(chunkOfTail) {
