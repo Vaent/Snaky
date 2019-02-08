@@ -39,30 +39,27 @@ function hideInstructions() {
   instructionsDiv.hidden = true;
   instructionsHideButton.hidden = true;
   instructionsShowButton.hidden = false;
-  createKeyListener();
-  createScreenTapListener();
 }
 
 function hideSettings() {
   settingsDiv.hidden = true;
   settingsHideButton.hidden = true;
   settingsShowButton.hidden = false;
-  createKeyListener();
-  createScreenTapListener();
 }
 
 function scaleGameView() {
-  let maxHeightOfTable = (
-    window.innerHeight
-    - documentBanner.clientHeight
-    - parseInt(getComputedStyle(documentBanner).getPropertyValue('margin-top'), 10)
-    - parseInt(getComputedStyle(documentBanner).getPropertyValue('margin-bottom'), 10)
-    - documentMenu.clientHeight
-    - parseInt(getComputedStyle(documentMenu).getPropertyValue('margin-bottom'), 10)
-  );
-  let maxRowHeight = Math.floor(maxHeightOfTable / numberOfRows);
+  // let maxHeightOfTable = (
+  //   window.innerHeight
+  //   - documentBanner.clientHeight
+  //   - parseInt(getComputedStyle(documentBanner).getPropertyValue('margin-top'), 10)
+  //   - parseInt(getComputedStyle(documentBanner).getPropertyValue('margin-bottom'), 10)
+  //   - documentMenu.clientHeight
+  //   - parseInt(getComputedStyle(documentMenu).getPropertyValue('margin-bottom'), 10)
+  // );
+  // let maxRowHeight = Math.floor(maxHeightOfTable / numberOfRows);
+  let maxRowHeight = Math.floor(window.innerHeight / numberOfRows);
   let maxColWidth = Math.floor(window.innerWidth / numberOfColumns);
-  cellSize = Math.min(maxRowHeight, maxColWidth) - 5; // target cell size reduced to allow for borders
+  cellSize = Math.min(maxRowHeight, maxColWidth) - 3; // target cell size reduced to allow for borders
   scaleTableCells();
 }
 
@@ -76,8 +73,6 @@ function showInstructions() {
   instructionsHideButton.hidden = false;
   instructionsShowButton.hidden = true;
   hideSettings();
-  deleteKeyListener();
-  deleteScreenTapListener();
 }
 
 function showSettings() {
@@ -85,6 +80,4 @@ function showSettings() {
   settingsHideButton.hidden = false;
   settingsShowButton.hidden = true;
   hideInstructions();
-  deleteKeyListener();
-  deleteScreenTapListener();
 }

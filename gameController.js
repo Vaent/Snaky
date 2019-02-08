@@ -6,8 +6,8 @@ var avatar,
   alive,
   foodWasEaten = false,
   pendingMove,
-  numberOfRows = 12,
-  numberOfColumns = 16,
+  numberOfRows = 20,
+  numberOfColumns = 20,
   rowChangeAmount,
   colChangeAmount,
   newRowChangeAmount,
@@ -164,14 +164,14 @@ function createKeyListener() {
 function createScreenTapListener() {
   document.addEventListener("touchstart", tapAction);
 }
-
-function deleteKeyListener() {
-  document.removeEventListener("keydown", keyAction);
-}
-
-function deleteScreenTapListener() {
-  document.removeEventListener("touchstart", tapAction);
-}
+// 
+// function deleteKeyListener() {
+//   document.removeEventListener("keydown", keyAction);
+// }
+//
+// function deleteScreenTapListener() {
+//   document.removeEventListener("touchstart", tapAction);
+// }
 
 function keyAction(event) {
   switch(event.key) {
@@ -209,7 +209,11 @@ function tapAction(event) {
   }
 
   if(!gameIsInProgress) {
-    if(event.changedTouches[0].clientY > gameViewDimensions.top) {
+    let userTappedGameBoard = event.changedTouches[0].clientY > gameViewDimensions.top
+      && event.changedTouches[0].clientY < gameViewDimensions.bottom
+      && event.changedTouches[0].clientX > gameViewDimensions.left
+      && event.changedTouches[0].clientX < gameViewDimensions.right;
+    if(userTappedGameBoard) {
       startGame();
     }
   } else if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
