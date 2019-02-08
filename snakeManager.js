@@ -18,7 +18,7 @@ Snaky.prototype.cellIsOccupied = function(rowIndex, colIndex) {
 
 Snaky.prototype.checkForFoodAt = function(rowIndex, colIndex) {
   if(findCellInTable(rowIndex, colIndex).innerHTML === ';') {
-    this.snakeEatsSemicolon();
+    foodWasEaten = true;
   }
 }
 
@@ -31,6 +31,12 @@ Snaky.prototype.createDefaultBody = function() {
   this.addToSnakeBody('+', Math.floor(numberOfRows/2), 3);
   this.addToSnakeBody('+', Math.floor(numberOfRows/2), 2);
   this.addToSnakeBody('+', Math.floor(numberOfRows/2), 1);
+}
+
+Snaky.prototype.digestFood = function() {
+  this.addToSnakeBody('+', -1, -1);
+  increaseScore(1);
+  makeFood();
 }
 
 Snaky.prototype.die = function() {
@@ -52,10 +58,4 @@ Snaky.prototype.hitWall = function() {
 
 Snaky.prototype.putFoodInCell = function(rowIndex, colIndex) {
   findCellInTable(rowIndex, colIndex).innerHTML = ';';
-}
-
-Snaky.prototype.snakeEatsSemicolon = function() {
-  this.addToSnakeBody('+', -1, -1);
-  increaseScore(1);
-  makeFood();
 }

@@ -19,7 +19,7 @@ Comet.prototype.cellIsOccupied = function(rowIndex, colIndex) {
 
 Comet.prototype.checkForFoodAt = function(rowIndex, colIndex) {
   if(findCellInTable(rowIndex, colIndex).style.backgroundColor === 'brown') {
-    this.cometEatsAsteroid();
+    foodWasEaten = true;
   }
 }
 
@@ -31,17 +31,17 @@ Comet.prototype.colourCell = function(rowIndex, colIndex, colour) {
   findCellInTable(rowIndex, colIndex).style.backgroundColor = colour;
 }
 
-Comet.prototype.cometEatsAsteroid = function() {
-  this.addToCometBody(-1, -1);
-  increaseScore(1);
-  makeFood();
-}
-
 Comet.prototype.createDefaultBody = function() {
   this.addToCometBody(Math.floor(numberOfRows/2), 4);
   this.addToCometBody(Math.floor(numberOfRows/2), 3);
   this.addToCometBody(Math.floor(numberOfRows/2), 2);
   this.addToCometBody(Math.floor(numberOfRows/2), 1);
+}
+
+Comet.prototype.digestFood = function() {
+  this.addToCometBody(-1, -1);
+  increaseScore(1);
+  makeFood();
 }
 
 Comet.prototype.die = function() {

@@ -4,6 +4,7 @@ var avatar,
   score,
   gameIsInProgress,
   alive,
+  foodWasEaten = false,
   pendingMove,
   numberOfRows = 12,
   numberOfColumns = 16,
@@ -100,6 +101,10 @@ function move() {
   clearTimeout(pendingMove); // ensure there are no overlapping timeouts
   checkForDirectionChange();
   updateBodyPosition();
+  if(foodWasEaten) {
+    avatar.digestFood();
+    foodWasEaten = false;
+  }
   if(alive) {
     pendingMove = setTimeout(function(){ move() }, delayBetweenMoves);
   }
