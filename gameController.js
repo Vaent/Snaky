@@ -73,6 +73,7 @@ function gameOver() {
   for(let i=0; i<buttons.length; i++) {
     buttons[i].disabled=false;
   }
+  document.querySelector('meta[name="viewport"]').content = "user-scalable=yes";
 }
 
 function getRandomEmptyCell() {
@@ -105,6 +106,7 @@ function move() {
 }
 
 function startGame() {
+  document.querySelector('meta[name="viewport"]').content = "user-scalable=no";
   if(rowChangeAmount === colChangeAmount) {changeDirectionToRight()}
   documentBanner.innerHTML = `Score: ${score}`;
   let buttons = document.getElementsByTagName('button');
