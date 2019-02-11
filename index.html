@@ -20,17 +20,25 @@
       <div id="settings" hidden>
         <p>
           <form id="speedSelector">
-            Game speed: << slowest
+            <p class='setting-label'>
+              Game speed:
+            </p>
+            slow
+            <input name="speed" type="radio" value=300>
             <input name="speed" type="radio" value=250>
-            <input name="speed" type="radio" value=200>
-            <input name="speed" type="radio" value=150 checked>
+            <input name="speed" type="radio" value=200 checked>
+            <input name="speed" type="radio" value=150>
             <input name="speed" type="radio" value=100>
-            <input name="speed" type="radio" value=50>
-            fastest >>
+            fast
           </form>
+        </p>
+        <hr>
         <p>
-          <button onclick=selectComet()>Play Comet</button>
-          <button onclick=selectSnaky()>Play Snaky</button>
+          <p class='setting-label'>
+            Game variant:
+          </p>
+          <button onclick=selectComet()>Comet</button>
+          <button onclick=selectSnaky()>Snaky</button>
         </p>
       </div>
     </div>

@@ -5,7 +5,7 @@ body {
   text-align: center;
 }
 button {
-  font-size: 1em
+  font-size: 1em;
 }
 div {
   border-top: 1px solid grey;
@@ -17,6 +17,10 @@ div {
 }
 h1 {
   font-size: 3em;
+}
+p.setting-label {
+  text-align: left;
+  color: green;
 }
 table {
   border: 2px solid black;

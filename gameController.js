@@ -14,7 +14,7 @@ var avatar,
   newColChangeAmount,
   oldRowIndex,
   oldColIndex,
-  delayBetweenMoves = 100,
+  delayBetweenMoves,
   buttons = document.getElementsByTagName("button"),
   documentBanner = document.getElementById("banner");
 
@@ -117,6 +117,7 @@ function move() {
 function startGame() {
   document.querySelector('meta[name="viewport"]').content = "user-scalable=no";
   if(rowChangeAmount === colChangeAmount) {changeDirectionToRight()}
+  setGameSpeed();
   documentBanner.innerHTML = `Score: ${score}`;
   for(let i=0; i<buttons.length; i++) {
     buttons[i].disabled=true;

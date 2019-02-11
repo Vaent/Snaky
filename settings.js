@@ -20,9 +20,7 @@ function selectSnaky() {
   }
 }
 
-(function() {
-  speedSelector.addEventListener("change", function() {
-    let valueSelected = new FormData(speedSelector).get("speed");
-    changeGameSpeed(Number(valueSelected));
-  });
-})();
+function setGameSpeed() {
+  let valueSelected = new FormData(speedSelector).get("speed");
+  changeGameSpeed(Number(valueSelected));
+}
