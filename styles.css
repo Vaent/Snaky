@@ -13,9 +13,7 @@ div {
 }
 #control-panel {
   border-bottom: 1px solid grey;
-  float: right;
   margin: 10px;
-  width: 40vw;
 }
 h1 {
   font-size: 3em;
