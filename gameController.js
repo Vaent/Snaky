@@ -15,6 +15,7 @@ var avatar,
   oldRowIndex,
   oldColIndex,
   delayBetweenMoves = 100,
+  buttons = document.getElementsByTagName("button"),
   documentBanner = document.getElementById("banner");
 
 function cellExists(rowIndex, colIndex) {
@@ -70,9 +71,11 @@ function findCellInTable(rowIndex, colIndex) {
 
 function gameOver() {
   alive = false;
-  let buttons = document.getElementsByTagName('button');
   for(let i=0; i<buttons.length; i++) {
     buttons[i].disabled=false;
+  }
+  for(let s=0; s<speedSelector.children.length; s++) {
+    speedSelector.children[s].disabled = false;
   }
   document.querySelector('meta[name="viewport"]').content = "user-scalable=yes";
 }
@@ -114,9 +117,11 @@ function startGame() {
   document.querySelector('meta[name="viewport"]').content = "user-scalable=no";
   if(rowChangeAmount === colChangeAmount) {changeDirectionToRight()}
   documentBanner.innerHTML = `Score: ${score}`;
-  let buttons = document.getElementsByTagName('button');
   for(let i=0; i<buttons.length; i++) {
     buttons[i].disabled=true;
+  }
+  for(let s=0; s<speedSelector.children.length; s++) {
+    speedSelector.children[s].disabled = true;
   }
   move();
   makeFood();
@@ -164,14 +169,6 @@ function createKeyListener() {
 function createScreenTapListener() {
   document.addEventListener("touchstart", tapAction);
 }
-// 
-// function deleteKeyListener() {
-//   document.removeEventListener("keydown", keyAction);
-// }
-//
-// function deleteScreenTapListener() {
-//   document.removeEventListener("touchstart", tapAction);
-// }
 
 function keyAction(event) {
   switch(event.key) {
