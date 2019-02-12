@@ -21,7 +21,7 @@ Whenever the game style is set to 'Snaky' or 'Comet', the game is reset. This in
 
 #### Controls/user input
 
-Originally the game only used the 4 arrow keys (you can press any key to start, but it's easiest to start by pressing an 'action' key and these are hard-coded as the arrows, which are the only keys that have any effect on the game once begun).
+Originally the game only used the 4 arrow keys to change direction (though any key would start the game). It is now possible for the player to define their own control keybindings in the settings menu. If alphabetic characters are chosen, they are converted to upper case for readability and to avoid potential problems if Caps Lock is toggled.
 
 Touch screen input is now also supported: the snake will turn through a right angle toward the location that was tapped. The game is also started by tapping within the 'play area' - so the menu buttons can be used without accidentally starting the game. While the game is in progress, all buttons and settings are disabled so that any part of the screen can be tapped to change direction.
 

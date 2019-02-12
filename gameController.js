@@ -15,6 +15,8 @@ var avatar,
   oldRowIndex,
   oldColIndex,
   delayBetweenMoves,
+  controls = {down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp'},
+  controlToBeChanged,
   buttons = document.getElementsByTagName("button"),
   documentBanner = document.getElementById("banner");
 
@@ -165,6 +167,31 @@ function updateIndices(bodyPart) {
 
 // functions relating to keyboard/touchscreen controls:
 
+function changeControl(direction) {
+  if(!!controlToBeChanged) {return}
+
+  controlToBeChanged = direction;
+  document.getElementById(
+    controlToBeChanged + 'ControlDisplay'
+  ).style.color = 'red';
+  document.getElementById("controlsSelectorInstructions").innerText = "Press the new key to bind.";
+}
+
+function changeControlKeyBinding(newKey) {
+  if(newKey.length === 1 && !!newKey.match(/[a-z]/)) {
+    newKey = newKey.toLocaleUpperCase();
+  }
+  if(!Object.values(controls).find(key => key === newKey)) {
+    controls[controlToBeChanged] = newKey;
+  }
+
+  let keyDisplay = document.getElementById(controlToBeChanged + 'ControlDisplay');
+  keyDisplay.innerHTML = `<label for="${controlToBeChanged}Control">${controls[controlToBeChanged]}</label>`;
+  keyDisplay.style.color = 'black';
+  document.getElementById("controlsSelectorInstructions").innerText = "Click/tap a control to change it.";
+  controlToBeChanged = null;
+}
+
 function createKeyListener() {
   document.addEventListener("keydown", keyAction);
 }
@@ -174,20 +201,31 @@ function createScreenTapListener() {
 }
 
 function keyAction(event) {
-  switch(event.key) {
-    case "ArrowDown":
+  if(!!controlToBeChanged) {
+    changeControlKeyBinding(event.key);
+    return;
+  }
+
+  let keyPress = event.key;
+  if(keyPress.length === 1 && !!keyPress.match(/[a-z]/)) {
+    keyPress = keyPress.toLocaleUpperCase();
+  }
+
+  switch(keyPress) {
+    case controls.down:
       changeDirectionToDown();
       break;
-    case "ArrowLeft":
+    case controls.left:
       changeDirectionToLeft();
       break;
-    case "ArrowRight":
+    case controls.right:
       changeDirectionToRight();
       break;
-    case "ArrowUp":
+    case controls.up:
       changeDirectionToUp();
       break;
   }
+
   if(!gameIsInProgress) {
     startGame();
   } else if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {

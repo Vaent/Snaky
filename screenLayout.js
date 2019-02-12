@@ -83,7 +83,7 @@ function optimiseCellSize(maxRowHeight, maxColWidth) {
 }
 
 function scaleTableCells() {
-  cellCSS.innerHTML = `td { width: ${cellSize}px; height: ${cellSize}px; font-size: ${0.8 * cellSize}px }`;
+  cellCSS.innerHTML = `#gameView td { width: ${cellSize}px; height: ${cellSize}px; font-size: ${0.8 * cellSize}px }`;
 }
 
 function updateControlPanelAlignment(orientation) {

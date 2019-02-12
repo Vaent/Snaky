@@ -30,14 +30,39 @@
           <input name="speed" type="radio" value=100>
           fast
         </form>
-        <p>
         <hr>
         <p class='setting-label'>
           Game variant:
         </p>
         <button onclick=selectComet()>Comet</button>
         <button onclick=selectSnaky()>Snaky</button>
-        <p>
+        <hr>
+        <p class='setting-label'>
+          Keyboard controls:
+        </p>
+        <table id="controlsSelector">
+          <tr>
+            <td><label for="upControl">Up:</label></td>
+            <td id="upControlDisplay"><label for="upControl">ArrowUp</label></td>
+            <td hidden><button id="upControl" onclick=changeControl('up')></td>
+          </tr>
+          <tr>
+            <td><label for="leftControl">Left:</label></td>
+            <td id="leftControlDisplay"><label for="leftControl">ArrowLeft</label></td>
+            <td hidden><button id="leftControl" onclick=changeControl('left')></td>
+          </tr>
+          <tr>
+            <td><label for="downControl">Down:</label></td>
+            <td id="downControlDisplay"><label for="downControl">ArrowDown</label></td>
+            <td hidden><button id="downControl" onclick=changeControl('down')></td>
+          </tr>
+          <tr>
+            <td><label for="rightControl">Right:</label></td>
+            <td id="rightControlDisplay"><label for="rightControl">ArrowRight</label></td>
+            <td hidden><button id="rightControl" onclick=changeControl('right')></td>
+          </tr>
+        </table>
+        <p id="controlsSelectorInstructions">Click/tap a control to change it.</p>
       </div>
     </div>
     <table><tbody id="gameView"></tbody></table>
