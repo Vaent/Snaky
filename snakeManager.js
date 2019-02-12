@@ -2,7 +2,7 @@
 
 function Snaky() {
   this.body = [];
-  this.instructions = "<p>Press any key to start.<br>Control the snake's direction using the arrow keys.<br>Eat the semicolons to increase your score and grow the snake.</p><p>The game ends when the snake hits a wall or its own tail.</p>";
+  this.instructions = "<p>Press any key to start, or tap the play area.<br>The snake will start moving to the right. Use the arrow keys on your keyboard, or tap your touchscreen, to change direction.<br>Eat the semicolons to increase your score and grow the snake.</p><p>The game ends when the snake hits a wall or its own tail.</p>";
 }
 
 Snaky.prototype.addToSnakeBody = function(char, row, col) {

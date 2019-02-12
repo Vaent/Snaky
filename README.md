@@ -4,6 +4,8 @@ A clone of Snake created to test my ability to manipulate an HTML page using raw
 
 The game has been hosted at cardpeegee.com/sides/snaky, and you can get a copy on your computer by simply downloading and saving all the HTML, CSS and JS files in a convenient folder. To play the game using downloaded files, open index.html in your favourite browser.
 
+**The game is usually only tested in Chrome (current version). It was recently tested in Firefox, with a bug identified where keyboard input is not recognised if the game is started after clicking/tapping a button, but otherwise working well. It IS NOT currently compatible with Edge or IE.**
+
 ## How it works
 
 The HTML page contains a table, with all the cells empty except the ones representing the snake or food. When the snake 'moves' in the game, each part of its body is actually being deleted from the cell it was in, and recreated in an adjacent cell. The scripts are loaded as the last element of the HTML `<body>`.
@@ -18,9 +20,9 @@ Whenever the game style is set to 'Snaky' or 'Comet', the game is reset. This in
 
 Originally the game only used the 4 arrow keys (you can press any key to start, but it's easiest to start by pressing an 'action' key and these are hard-coded as the arrows, which are the only keys that have any effect on the game once begun).
 
-Touch screen input is now also supported: the snake will turn through a right angle toward the location that was tapped. The game is also started by tapping, but a tap above the game screen will not be registered so that the menu buttons can be used without accidentally starting the game.
+Touch screen input is now also supported: the snake will turn through a right angle toward the location that was tapped. The game is also started by tapping within the 'play area' - so the menu buttons can be used without accidentally starting the game. While the game is in progress, all buttons and settings are disabled so that any part of the screen can be tapped to change direction.
 
-All key presses and screen taps are ignored by the game while the instructions/settings are visible, as those take up a large portion of the screen. This is achieved by deleting the eventListeners and recreating them at the appropriate moments. Input is still registered by other components, such as HTML buttons, so the settings can be changed and the menu closed afterwards.
+Previously the game could not be started when the instructions or settings were visible, as the page had a fixed portrait layout and was intended to be viewed on a laptop/desktop computer, so space was at a premium. The layout is now flexible and the play area resizes itself to fit the available space, so there is no longer any requirement to close the instructions/settings.
 
 #### Moving the snake
 

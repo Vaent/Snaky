@@ -78,7 +78,7 @@ function gameOver() {
     speedSelector.children[s].disabled = false;
   }
   document.querySelector('meta[name="viewport"]').content = "user-scalable=yes";
-  screen.orientation.unlock();
+  // screen.orientation.unlock();
 }
 
 function getRandomEmptyCell() {
