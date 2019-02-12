@@ -249,5 +249,6 @@ function resetGame() {
     createKeyListener();
     createScreenTapListener();
     createScreenChangeListeners();
+    if(!FormData.prototype.get) {speedSelector.innerHTML = "";}
   });
 })();

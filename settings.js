@@ -21,6 +21,11 @@ function selectSnaky() {
 }
 
 function setGameSpeed() {
-  let valueSelected = new FormData(speedSelector).get("speed");
+  let valueSelected;
+  if(FormData.prototype.get) {
+    valueSelected = new FormData(speedSelector).get("speed");
+  } else {
+    valueSelected = 200;
+  }
   changeGameSpeed(Number(valueSelected));
 }

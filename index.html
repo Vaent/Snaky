@@ -18,28 +18,26 @@
       </p>
       <div id="instructions" hidden></div>
       <div id="settings" hidden>
-        <p>
-          <form id="speedSelector">
-            <p class='setting-label'>
-              Game speed:
-            </p>
-            slow
-            <input name="speed" type="radio" value=300>
-            <input name="speed" type="radio" value=250>
-            <input name="speed" type="radio" value=200 checked>
-            <input name="speed" type="radio" value=150>
-            <input name="speed" type="radio" value=100>
-            fast
-          </form>
+        <p class='setting-label'>
+          Game speed:
         </p>
+        <form id="speedSelector">
+          slow
+          <input name="speed" type="radio" value=300>
+          <input name="speed" type="radio" value=250>
+          <input name="speed" type="radio" value=200 checked>
+          <input name="speed" type="radio" value=150>
+          <input name="speed" type="radio" value=100>
+          fast
+        </form>
+        <p>
         <hr>
-        <p>
-          <p class='setting-label'>
-            Game variant:
-          </p>
-          <button onclick=selectComet()>Comet</button>
-          <button onclick=selectSnaky()>Snaky</button>
+        <p class='setting-label'>
+          Game variant:
         </p>
+        <button onclick=selectComet()>Comet</button>
+        <button onclick=selectSnaky()>Snaky</button>
+        <p>
       </div>
     </div>
     <table><tbody id="gameView"></tbody></table>

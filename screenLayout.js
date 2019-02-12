@@ -28,18 +28,25 @@ function createGameView() {
 
 function createScreenChangeListeners() {
   window.addEventListener('resize', updateScreenLayout);
-  screen.orientation.addEventListener('change', updateScreenLayout);
+  if(!!screen) {
+    if(!!screen.orientation) {
+      screen.orientation.addEventListener('change', updateScreenLayout);
+    } else if(!!screen.msOrientation) {
+      screen.addEventListener('MSOrientationChange', updateScreenLayout);
+    }
+  }
 }
 
 function detectOrientation() {
-  if(!screen.orientation.type) {
-    if(window.innerWidth > window.innerHeight) {
-      return 'landscape';
-    } else {
-      return 'portrait';
-    }
+  if(!!screen) {
+    if(!!screen.orientation) {return screen.orientation.type.split("-")[0]}
+    if(!!screen.msOrientation) {return screen.msOrientation.split("-")[0]}
+  }
+
+  if(window.innerWidth > window.innerHeight) {
+    return 'landscape';
   } else {
-    return screen.orientation.type.split("-")[0];
+    return 'portrait';
   }
 }
 
