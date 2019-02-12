@@ -116,6 +116,7 @@ function move() {
 
 function startGame() {
   document.querySelector('meta[name="viewport"]').content = "user-scalable=no";
+  document.activeElement.blur();
   changeDirectionToRight();
   setGameSpeed();
   documentBanner.innerHTML = `Score: ${score}`;
