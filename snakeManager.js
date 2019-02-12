@@ -10,9 +10,9 @@ Snaky.prototype.addToSnakeBody = function(char, row, col) {
 }
 
 Snaky.prototype.cellIsOccupied = function(rowIndex, colIndex) {
-  return (
-    findCellInTable(rowIndex, colIndex).innerHTML === 'o' ||
-    findCellInTable(rowIndex, colIndex).innerHTML === '+'
+  let cellContents = findCellInTable(rowIndex, colIndex).innerHTML;
+  return !!(
+    ['o','&lt;','&gt;','v','^'].find(char => cellContents === char)
   );
 }
 
@@ -28,13 +28,14 @@ Snaky.prototype.clearCell = function(rowIndex, colIndex) {
 
 Snaky.prototype.createDefaultBody = function() {
   this.addToSnakeBody('o', Math.floor(numberOfRows/2), 4);
-  this.addToSnakeBody('+', Math.floor(numberOfRows/2), 3);
-  this.addToSnakeBody('+', Math.floor(numberOfRows/2), 2);
-  this.addToSnakeBody('+', Math.floor(numberOfRows/2), 1);
+  this.addToSnakeBody('<', Math.floor(numberOfRows/2), 3);
+  this.addToSnakeBody('<', Math.floor(numberOfRows/2), 2);
+  this.addToSnakeBody('<', Math.floor(numberOfRows/2), 1);
 }
 
 Snaky.prototype.digestFood = function() {
-  this.addToSnakeBody('+', -1, -1);
+  this.addToSnakeBody('<', oldRowIndex, oldColIndex);
+  this.display( this.body[this.body.length - 1] );
   increaseScore(1);
   makeFood();
 }
@@ -45,6 +46,9 @@ Snaky.prototype.die = function() {
 }
 
 Snaky.prototype.display = function(bodyPart) {
+  if(bodyPart.char !== 'o') {
+    this.updateBodyPartDirection(bodyPart);
+  }
   findCellInTable(bodyPart.row, bodyPart.col).innerHTML = bodyPart.char;
 }
 
@@ -58,4 +62,17 @@ Snaky.prototype.hitWall = function() {
 
 Snaky.prototype.putFoodInCell = function(rowIndex, colIndex) {
   findCellInTable(rowIndex, colIndex).innerHTML = ';';
+}
+
+Snaky.prototype.updateBodyPartDirection = function(bodyPart) {
+  let prevBodyPart = this.body[this.body.indexOf(bodyPart) - 1];
+  if(prevBodyPart.row < bodyPart.row){
+    bodyPart.char = 'v';
+  } else if(prevBodyPart.row > bodyPart.row){
+    bodyPart.char = '^';
+  } else if(prevBodyPart.col < bodyPart.col){
+    bodyPart.char = '>';
+  } else if(prevBodyPart.col > bodyPart.col){
+    bodyPart.char = '<';
+  }
 }

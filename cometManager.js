@@ -39,7 +39,8 @@ Comet.prototype.createDefaultBody = function() {
 }
 
 Comet.prototype.digestFood = function() {
-  this.addToCometBody(-1, -1);
+  this.addToCometBody(oldRowIndex, oldColIndex);
+  this.display( this.body[this.body.length - 1] );
   increaseScore(1);
   makeFood();
 }
