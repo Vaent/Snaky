@@ -136,7 +136,7 @@ function startGame() {
 function tryToMove(bodyPart) {
   // check whether the intended space exists and is unoccupied
   if(!cellExists(bodyPart.row, bodyPart.col)) {
-    avatar.hitWall();
+    avatar.hitWall(bodyPart);
   } else if(avatar.cellIsOccupied(bodyPart.row, bodyPart.col)) {
     avatar.hitBodyPartAt(bodyPart.row, bodyPart.col);
   } else {

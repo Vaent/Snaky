@@ -3,6 +3,7 @@
 function Snaky() {
   this.body = [];
   this.instructions = "<p>Press any key to start, or tap the play area.</p><p>The snake will start moving to the right. To change direction, use the keys defined in the Settings, or tap your touchscreen.</p><p>Eat the semicolons to increase your score and grow the snake.</p><p>The game ends when the snake hits a wall or its own tail.</p>";
+  this.teleport = false;
 }
 
 Snaky.prototype.addToSnakeBody = function(char, row, col) {
@@ -56,8 +57,14 @@ Snaky.prototype.hitBodyPartAt = function(rowIndex, colIndex) {
   this.die();
 }
 
-Snaky.prototype.hitWall = function() {
-  this.die();
+Snaky.prototype.hitWall = function(bodyPart) {
+  if(this.teleport) {
+    bodyPart.row = ((bodyPart.row + numberOfRows - 1) % numberOfRows) + 1;
+    bodyPart.col = ((bodyPart.col + numberOfColumns - 1) % numberOfColumns) + 1;
+    tryToMove(bodyPart);
+  } else {
+    this.die();
+  }
 }
 
 Snaky.prototype.putFoodInCell = function(rowIndex, colIndex) {
