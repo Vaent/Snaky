@@ -11,9 +11,12 @@ div {
   border-top: 1px solid grey;
   width: inherit;
 }
-#control-panel {
+#controlPanel {
   border-bottom: 1px solid grey;
   margin: 10px;
+}
+#playButton {
+  font-size: 2em;
 }
 #settings {
   margin-bottom: 10px;

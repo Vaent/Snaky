@@ -2,13 +2,16 @@
 
 var cellCSS = document.createElement('style'),
   controlPanelAlignCSS = document.createElement('style'),
+  playButtonCSS = document.createElement('style'),
   cellSize,
-  controlPanel = document.getElementById("control-panel"),
-  gameViewTable = document.getElementById("gameView");
+  controlPanel = document.getElementById("controlPanel"),
+  gameViewTable = document.getElementById("gameView"),
+  playButton = document.getElementById('playButton');
 
 function attachCSSEditors() {
   document.body.appendChild(cellCSS);
   document.body.appendChild(controlPanelAlignCSS);
+  document.body.appendChild(playButtonCSS);
 }
 
 function createGameView() {
@@ -24,6 +27,8 @@ function createGameView() {
     htmlToAdd += '</tr>';
     gameViewTable.innerHTML += htmlToAdd;
   }
+  playButton.hidden = false;
+  updateScreenLayout();
 }
 
 function createScreenChangeListeners() {
@@ -69,15 +74,22 @@ function optimiseCellSize(maxRowHeight, maxColWidth) {
   cellSize = Math.min(maxRowHeight, maxColWidth) - 3;
 }
 
+function positionPlayButton() {
+  let gameViewDimensions = gameViewTable.getBoundingClientRect();
+  let posX = (gameViewDimensions.right + gameViewDimensions.left - playButton.clientWidth) / 2;
+  let posY = (gameViewDimensions.top + gameViewDimensions.bottom - playButton.clientHeight) / 2;
+  playButtonCSS.innerHTML = `#playButton { position: absolute; left: ${posX}px; top: ${posY}px; }`;
+}
+
 function scaleTableCells() {
   cellCSS.innerHTML = `#gameView td { width: ${cellSize}px; height: ${cellSize}px; font-size: ${0.8 * cellSize}px }`;
 }
 
 function updateControlPanelAlignment(orientation) {
   if(orientation === 'landscape') {
-    controlPanelAlignCSS.innerHTML = "#control-panel { float: right; width: 40vw; }"
+    controlPanelAlignCSS.innerHTML = "#controlPanel { float: right; width: 40vw; }"
   } else {
-    controlPanelAlignCSS.innerHTML = "#control-panel { margin: auto; }"
+    controlPanelAlignCSS.innerHTML = "#controlPanel { margin: auto; }"
   }
 }
 
@@ -101,4 +113,5 @@ function updateScreenLayout() {
 
   optimiseCellSize(mainCellSize, altCellSize);
   scaleTableCells();
+  positionPlayButton();
 }

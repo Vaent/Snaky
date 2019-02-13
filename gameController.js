@@ -80,7 +80,6 @@ function gameOver() {
     speedSelector.children[s].disabled = false;
   }
   document.querySelector('meta[name="viewport"]').content = "user-scalable=yes";
-  // screen.orientation.unlock();
 }
 
 function getRandomEmptyCell() {
@@ -117,6 +116,7 @@ function move() {
 }
 
 function startGame() {
+  playButton.hidden = true;
   document.querySelector('meta[name="viewport"]').content = "user-scalable=no";
   document.activeElement.blur();
   changeDirectionToRight();
@@ -226,9 +226,7 @@ function keyAction(event) {
       break;
   }
 
-  if(!gameIsInProgress) {
-    startGame();
-  } else if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
+  if(gameIsInProgress && Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
     move(); // if direction has changed, don't wait for timeout
   }
 }
@@ -246,15 +244,7 @@ function tapAction(event) {
     distanceFromHead > 0 ? changeDirectionToRight() : changeDirectionToLeft();
   }
 
-  if(!gameIsInProgress) {
-    let userTappedGameBoard = event.changedTouches[0].clientY > gameViewDimensions.top
-      && event.changedTouches[0].clientY < gameViewDimensions.bottom
-      && event.changedTouches[0].clientX > gameViewDimensions.left
-      && event.changedTouches[0].clientX < gameViewDimensions.right;
-    if(userTappedGameBoard) {
-      startGame();
-    }
-  } else if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
+  if(gameIsInProgress && Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
     move(); // if direction has changed, don't wait for timeout
   }
 }
@@ -282,7 +272,6 @@ function resetGame() {
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
     attachCSSEditors();
-    updateScreenLayout();
     selectSnaky();
     createKeyListener();
     createScreenTapListener();
