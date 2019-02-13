@@ -27,27 +27,14 @@ function createGameView() {
 }
 
 function createScreenChangeListeners() {
+  window.matchMedia("(min-height: 100vw)").addListener(updateScreenLayout);
   window.addEventListener('resize', updateScreenLayout);
-  if(!!screen) {
-    if(!!screen.orientation) {
-      screen.orientation.addEventListener('change', updateScreenLayout);
-    } else if(!!screen.msOrientation) {
-      screen.addEventListener('MSOrientationChange', updateScreenLayout);
-    }
-  }
 }
 
 function detectOrientation() {
-  if(!!screen) {
-    if(!!screen.orientation) {return screen.orientation.type.split("-")[0]}
-    if(!!screen.msOrientation) {return screen.msOrientation.split("-")[0]}
-  }
-
-  if(window.innerWidth > window.innerHeight) {
-    return 'landscape';
-  } else {
-    return 'portrait';
-  }
+  return (
+    window.matchMedia("(min-height: 100vw)").matches ? 'portrait' : 'landscape'
+  );
 }
 
 function getCellSizeLimit(windowSize, otherContentSize, numberOfDivisions) {
