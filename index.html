@@ -10,14 +10,18 @@
     <div id="controlPanel">
       <h1 id="banner"></h1>
       <p id="menu">
-        <button id="showInstructions" onclick=showInstructions()>Instructions</button>
-        <button id="hideInstructions" onclick=hideInstructions() hidden>Hide instructions</button>
-        <button id="showSettings" onclick=showSettings()>Settings</button>
-        <button id="hideSettings" onclick=hideSettings() hidden>Hide settings</button>
-        <button onclick=resetGame()>Reset game</button>
+        <button id="showInstructions" class="menuOption" onclick=showInstructions()>Instructions</button>
+        <button id="hideInstructions" class="menuOption" onclick=viewDefault() hidden>Hide instructions</button>
+        <button id="showSettings" class="menuOption" onclick=showSettings()>Settings</button>
+        <button id="hideSettings" class="menuOption" onclick=viewDefault() hidden>Hide settings</button>
       </p>
-      <div id="instructions" hidden></div>
-      <div id="settings" hidden>
+      <h1 id="scoreDisplay" hidden></p>
+    </div>
+
+    <div id="instructions" hidden></div>
+
+    <div id="settings" hidden>
+      <div class="settingCategory">
         <p class='setting-label'>
           Game speed:
         </p>
@@ -30,13 +34,15 @@
           <input name="speed" type="radio" value=100>
           fast
         </form>
-        <hr>
+      </div>
+      <div class="settingCategory">
         <p class='setting-label'>
           Game variant:
         </p>
-        <button onclick=selectComet()>Comet</button>
-        <button onclick=selectSnaky()>Snaky</button>
-        <hr>
+        <button onclick=selectGameStyle(Comet)>Comet</button>
+        <button onclick=selectGameStyle(Snaky)>Snaky</button>
+      </div>
+      <div class="settingCategory">
         <p class='setting-label'>
           Keyboard controls:
         </p>
@@ -65,8 +71,11 @@
         <p id="controlsSelectorInstructions">Click/tap a control to change it.</p>
       </div>
     </div>
-    <table><tbody id="gameView"></tbody></table>
+
+    <table id="gameView" hidden></table>
     <button id="playButton" onclick="startGame()">Play</button>
+    <button id="resetButton" onclick=resetGame()>Reset game</button>
+
     <script src="cometManager.js"></script>
     <script src="display.js"></script>
     <script src="gameController.js"></script>

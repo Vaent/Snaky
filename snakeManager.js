@@ -28,6 +28,7 @@ Snaky.prototype.clearCell = function(rowIndex, colIndex) {
 }
 
 Snaky.prototype.createDefaultBody = function() {
+  this.body = [];
   this.addToSnakeBody('o', Math.floor(numberOfRows/2), 4);
   this.addToSnakeBody('<', Math.floor(numberOfRows/2), 3);
   this.addToSnakeBody('<', Math.floor(numberOfRows/2), 2);

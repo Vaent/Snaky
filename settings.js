@@ -6,17 +6,11 @@ function changeGameSpeed(delayValue) {
   delayBetweenMoves = delayValue;
 }
 
-function selectComet() {
+function selectGameStyle(option) {
   if(!gameIsInProgress || !alive) {
-    avatar = new Comet;
-    resetGame();
-  }
-}
-
-function selectSnaky() {
-  if(!gameIsInProgress || !alive) {
-    avatar = new Snaky;
-    resetGame();
+    avatar = new option;
+    documentBanner.innerHTML = avatar.constructor.name;
+    document.title = avatar.constructor.name;
   }
 }
 

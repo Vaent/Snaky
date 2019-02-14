@@ -1,23 +1,19 @@
 'use strict'
 
 var cellCSS = document.createElement('style'),
-  controlPanelAlignCSS = document.createElement('style'),
-  playButtonCSS = document.createElement('style'),
   cellSize,
   controlPanel = document.getElementById("controlPanel"),
   gameViewTable = document.getElementById("gameView"),
-  playButton = document.getElementById('playButton');
+  playButton = document.getElementById('playButton'),
+  resetButton = document.getElementById('resetButton');
 
 function attachCSSEditors() {
   document.body.appendChild(cellCSS);
-  document.body.appendChild(controlPanelAlignCSS);
-  document.body.appendChild(playButtonCSS);
 }
 
 function createGameView() {
-  gameViewTable.innerHTML = '';
+  let htmlToAdd = '<tbody>';
   for(let r=1; r<=numberOfRows; r++) {
-    let htmlToAdd = '';
     htmlToAdd += '<tr>';
     for(let c=1; c<=numberOfColumns; c++) {
       let row2digit = String(r).padStart(2,'0');
@@ -25,8 +21,10 @@ function createGameView() {
       htmlToAdd += `<td id='r${row2digit}c${col2digit}'></td>`;
     }
     htmlToAdd += '</tr>';
-    gameViewTable.innerHTML += htmlToAdd;
   }
+  htmlToAdd += '</tbody>';
+  gameViewTable.innerHTML = htmlToAdd;
+  resetButton.hidden = true;
   playButton.hidden = false;
   updateScreenLayout();
 }
@@ -78,24 +76,34 @@ function positionPlayButton() {
   let gameViewDimensions = gameViewTable.getBoundingClientRect();
   let posX = (gameViewDimensions.right + gameViewDimensions.left - playButton.clientWidth) / 2;
   let posY = (gameViewDimensions.top + gameViewDimensions.bottom - playButton.clientHeight) / 2;
-  playButtonCSS.innerHTML = `#playButton { position: absolute; left: ${posX}px; top: ${posY}px; }`;
+  playButton.style.left = `${posX}px`;
+  playButton.style.top = `${posY}px`;
+}
+
+function positionResetButton() {
+  let gameViewDimensions = gameViewTable.getBoundingClientRect();
+  let posX = (gameViewDimensions.right + gameViewDimensions.left - resetButton.clientWidth) / 2;
+  let posY = (gameViewDimensions.top + gameViewDimensions.bottom - resetButton.clientHeight) / 2;
+  resetButton.style.left = `${posX}px`;
+  resetButton.style.top = `${posY}px`;
 }
 
 function scaleTableCells() {
   cellCSS.innerHTML = `#gameView td { width: ${cellSize}px; height: ${cellSize}px; font-size: ${0.8 * cellSize}px }`;
 }
 
-function updateControlPanelAlignment(orientation) {
+function updateFlexAlignment(orientation) {
+  document.body.style.height = `${window.innerHeight}px`;
   if(orientation === 'landscape') {
-    controlPanelAlignCSS.innerHTML = "#controlPanel { float: right; width: 40vw; }"
+    document.body.style.flexDirection = "row-reverse";
   } else {
-    controlPanelAlignCSS.innerHTML = "#controlPanel { margin: auto; }"
+    document.body.style.flexDirection = "column";
   }
 }
 
 function updateScreenLayout() {
   let or = detectOrientation();
-  updateControlPanelAlignment(or);
+  updateFlexAlignment(or);
   // control panel alignment must be set before determining the layout values
   let major = getLayoutValues(or).primary,
     minor = getLayoutValues(or).secondary;
@@ -114,4 +122,5 @@ function updateScreenLayout() {
   optimiseCellSize(mainCellSize, altCellSize);
   scaleTableCells();
   positionPlayButton();
+  positionResetButton();
 }

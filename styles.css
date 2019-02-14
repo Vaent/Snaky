@@ -1,37 +1,53 @@
 body {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 1em;
   font-weight: bolder;
+  margin: 0;
   text-align: center;
 }
 button {
   font-size: 1em;
 }
-div {
-  border-top: 1px solid grey;
-  width: inherit;
-}
-#controlPanel {
-  border-bottom: 1px solid grey;
+.menuOption {
   margin: 10px;
 }
-#playButton {
+#playButton, #resetButton {
+  border: none;
   font-size: 2em;
+  padding: 1em;
+  position: absolute;
 }
-#settings {
-  margin-bottom: 10px;
+div {
+  border-bottom: 1px solid grey;
+  border-top: 1px solid grey;
+  margin: 10px;
+}
+#controlPanel {
+  min-width: 18em;
+}
+#instruction, #settings {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.settingCategory {
+  margin: 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 h1 {
   font-size: 3em;
 }
 p.setting-label {
-  text-align: left;
   color: green;
 }
 table {
   border: 2px solid black;
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
 }
 #controlsSelector {
   border: none;

@@ -13,6 +13,12 @@ function hideInstructions() {
   instructionsShowButton.hidden = false;
 }
 
+function hidePlayArea() {
+  gameViewTable.hidden = true;
+  playButton.hidden = true;
+  resetButton.hidden = true;
+}
+
 function hideSettings() {
   settingsDiv.hidden = true;
   settingsHideButton.hidden = true;
@@ -25,6 +31,17 @@ function showInstructions() {
   instructionsHideButton.hidden = false;
   instructionsShowButton.hidden = true;
   hideSettings();
+  hidePlayArea();
+}
+
+function showPlayArea() {
+  gameViewTable.hidden = false;
+  if(alive) {
+    prepareGame();
+  } else {
+    resetButton.hidden = false;
+    positionResetButton();
+  }
 }
 
 function showSettings() {
@@ -32,4 +49,11 @@ function showSettings() {
   settingsHideButton.hidden = false;
   settingsShowButton.hidden = true;
   hideInstructions();
+  hidePlayArea();
+}
+
+function viewDefault() {
+  hideInstructions();
+  hideSettings();
+  showPlayArea();
 }

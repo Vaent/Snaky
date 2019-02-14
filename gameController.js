@@ -1,9 +1,9 @@
 'use strict'
 
 var avatar,
-  score,
-  gameIsInProgress,
-  alive,
+  score = 0,
+  gameIsInProgress = false,
+  alive = true,
   foodWasEaten = false,
   pendingMove,
   numberOfRows = 20,
@@ -18,7 +18,8 @@ var avatar,
   controls = {down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp'},
   controlToBeChanged,
   buttons = document.getElementsByTagName("button"),
-  documentBanner = document.getElementById("banner");
+  documentBanner = document.getElementById("banner"),
+  scoreDisplay = document.getElementById("scoreDisplay");
 
 function cellExists(rowIndex, colIndex) {
   return !!findCellInTable(rowIndex, colIndex);
@@ -55,7 +56,7 @@ function checkForDirectionChange() {
 
 function decreaseScore(amount) {
   score -= amount;
-  documentBanner.innerHTML = `Score: ${score}`;
+  scoreDisplay.innerHTML = `Score: ${score}`;
 }
 
 function deleteAndRemake(bodyPart) {
@@ -80,6 +81,8 @@ function gameOver() {
     speedSelector.children[s].disabled = false;
   }
   document.querySelector('meta[name="viewport"]').content = "user-scalable=yes";
+  resetButton.hidden = false;
+  positionResetButton();
 }
 
 function getRandomEmptyCell() {
@@ -94,7 +97,7 @@ function getRandomEmptyCell() {
 
 function increaseScore(amount) {
   score += amount;
-  documentBanner.innerHTML = `Score: ${score}`;
+  scoreDisplay.innerHTML = `Score: ${score}`;
 }
 
 function makeFood() {
@@ -117,11 +120,14 @@ function move() {
 
 function startGame() {
   playButton.hidden = true;
+  document.getElementById("menu").hidden = true;
+  scoreDisplay.innerHTML = "Score: 0";
+  scoreDisplay.hidden = false;
   document.querySelector('meta[name="viewport"]').content = "user-scalable=no";
   document.activeElement.blur();
   changeDirectionToRight();
   setGameSpeed();
-  documentBanner.innerHTML = `Score: ${score}`;
+  documentBanner.style.fontSize = "2em";
   for(let i=0; i<buttons.length; i++) {
     buttons[i].disabled=true;
   }
@@ -255,6 +261,7 @@ function tapAction(event) {
 function prepareGame() {
   documentBanner.innerHTML = avatar.constructor.name;
   document.title = avatar.constructor.name;
+  document.getElementById("menu").hidden = false;
   createGameView();
   avatar.createDefaultBody();
   avatar.body.forEach(function(bodyPart){ avatar.display(bodyPart) });
@@ -263,16 +270,20 @@ function prepareGame() {
 function resetGame() {
   clearTimeout(pendingMove);
   score = 0;
+  scoreDisplay.hidden = true;
+  documentBanner.style.fontSize = "";
   gameIsInProgress = false;
   alive = true;
-  avatar.body = [];
+  rowChangeAmount = undefined;
+  colChangeAmount = undefined;
   prepareGame();
 }
 
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
     attachCSSEditors();
-    selectSnaky();
+    selectGameStyle(Snaky);
+    viewDefault();
     createKeyListener();
     createScreenTapListener();
     createScreenChangeListeners();

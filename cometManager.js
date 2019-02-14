@@ -32,6 +32,7 @@ Comet.prototype.colourCell = function(rowIndex, colIndex, colour) {
 }
 
 Comet.prototype.createDefaultBody = function() {
+  this.body = [];
   this.addToCometBody(Math.floor(numberOfRows/2), 4);
   this.addToCometBody(Math.floor(numberOfRows/2), 3);
   this.addToCometBody(Math.floor(numberOfRows/2), 2);
