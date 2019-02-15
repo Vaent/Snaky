@@ -10,10 +10,10 @@
     <div id="controlPanel">
       <h1 id="banner"></h1>
       <p id="menu">
-        <button id="showInstructions" class="menuOption" onclick=showInstructions()>Instructions</button>
-        <button id="hideInstructions" class="menuOption" onclick=viewDefault() hidden>Hide instructions</button>
-        <button id="showSettings" class="menuOption" onclick=showSettings()>Settings</button>
-        <button id="hideSettings" class="menuOption" onclick=viewDefault() hidden>Hide settings</button>
+        <button id="showInstructions" class="menuOption" onclick=Display.showInstructions()>Instructions</button>
+        <button id="hideInstructions" class="menuOption" onclick=Display.viewDefault() hidden>Hide instructions</button>
+        <button id="showSettings" class="menuOption" onclick=Display.showSettings()>Settings</button>
+        <button id="hideSettings" class="menuOption" onclick=Display.viewDefault() hidden>Hide settings</button>
       </p>
       <h1 id="scoreDisplay" hidden></p>
     </div>
@@ -39,8 +39,8 @@
         <p class='settingLabel'>
           Game variant:
         </p>
-        <button onclick=selectGameStyle(Comet)>Comet</button>
-        <button onclick=selectGameStyle(Snaky)>Snaky</button>
+        <button onclick=Settings.selectGameStyle(Comet)>Comet</button>
+        <button onclick=Settings.selectGameStyle(Snaky)>Snaky</button>
       </div>
       <div class="settingCategory">
         <p class='settingLabel'>
@@ -74,13 +74,15 @@
 
     <table id="gameView" hidden></table>
     <button id="playButton" onclick="startGame()">Play</button>
-    <button id="resetButton" onclick=resetGame()>Reset game</button>
+    <button id="resetButton" onclick=GameSetUp.resetGame()>Reset game</button>
 
     <script src="src/cometManager.js"></script>
     <script src="src/display.js"></script>
     <script src="src/directionControls.js"></script>
     <script src="src/gameController.js"></script>
-    <script src="src/screenLayout.js"></script>
+    <script src="src/gameSetUp.js"></script>
+    <script src="src/layoutController.js"></script>
+    <script src="src/pageElements.js"></script>
     <script src="src/score.js"></script>
     <script src="src/settings.js"></script>
     <script src="src/snakeManager.js"></script>

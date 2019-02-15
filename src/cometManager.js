@@ -1,6 +1,7 @@
 'use strict'
 
 function Comet() {
+  this.alive = true;
   this.body = [];
   this.instructions = "<p>Click 'Play' to start the game.</p><p>The comet will start moving to the right. To change direction, use the keys defined in the Settings, or tap your touchscreen.</p><p>Absorb asteroids to increase your score and grow the comet.</p><p>If the comet runs into itself, a section of its tail will be lost and your score will be severely reduced.</p><p>The game ends when the comet hits a wall.</p>";
 }
@@ -62,7 +63,7 @@ Comet.prototype.disintegrate = function(chunkOfTail) {
       delayBetweenMoves / 1.5
     );
   }
-  if(alive) {score.decreaseScore(2)}
+  if(this.alive) {score.decreaseScore(2)}
   if(chunkOfTail.length > 0) {
     setTimeout(
       () => {this.disintegrate(chunkOfTail)},

@@ -50,7 +50,7 @@ KeyController.prototype.changeControl = function(direction) {
   document.getElementById(
     this.controlToBeChanged + 'ControlDisplay'
   ).style.color = 'red';
-  controlsSelectorInstructions.innerHTML = "Press the new key to bind.";
+  pageElements.controlsSelectorInstructions.innerHTML = "Press the new key to bind.";
 }
 
 KeyController.prototype.changeControlKeyBinding = function(newKey) {
@@ -61,7 +61,7 @@ KeyController.prototype.changeControlKeyBinding = function(newKey) {
   let keyDisplay = document.getElementById(this.controlToBeChanged + 'ControlDisplay');
   keyDisplay.innerHTML = `<label for="${this.controlToBeChanged}Control">${this[this.controlToBeChanged]}</label>`;
   keyDisplay.style.color = 'black';
-  controlsSelectorInstructions.innerHTML = "Click/tap a control to change it.";
+  pageElements.controlsSelectorInstructions.innerHTML = "Click/tap a control to change it.";
   this.controlToBeChanged = '';
 }
 
@@ -106,8 +106,11 @@ function TapController() {
 }
 
 TapController.prototype.tapAction = function(event) {
-  let gameViewDimensions = gameViewTable.getBoundingClientRect();
+  if(pageElements.gameView.hidden || !gameIsInProgress || !avatar.alive) {
+    return;
+  }
 
+  let gameViewDimensions = pageElements.gameView.getBoundingClientRect();
   if(rowChangeAmount === 0) {
     let snakeHeadPosition = cellSize * (avatar.body[0].row - 0.5) + gameViewDimensions.top;
     let distanceFromHead = (event.changedTouches[0].clientY - snakeHeadPosition);
@@ -118,7 +121,7 @@ TapController.prototype.tapAction = function(event) {
     distanceFromHead > 0 ? changeDirectionToRight() : changeDirectionToLeft();
   }
 
-  if(gameIsInProgress && Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
+  if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
     move(); // if direction has changed, don't wait for timeout
   }
 }

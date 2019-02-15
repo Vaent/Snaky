@@ -1,25 +1,25 @@
 'use strict'
 
-var speedSelector = document.getElementById("speedSelector");
+function Settings() {}
 
-function changeGameSpeed(delayValue) {
+Settings.changeGameSpeed = function(delayValue) {
   delayBetweenMoves = delayValue;
 }
 
-function selectGameStyle(option) {
-  if(!gameIsInProgress || !alive) {
+Settings.selectGameStyle = function(option) {
+  if(!gameIsInProgress || !avatar.alive) {
     avatar = new option;
-    documentBanner.innerHTML = avatar.constructor.name;
+    pageElements.banner.innerHTML = avatar.constructor.name;
     document.title = avatar.constructor.name;
   }
 }
 
-function setGameSpeed() {
+Settings.setGameSpeed = function() {
   let valueSelected;
   if(FormData.prototype.get) {
-    valueSelected = new FormData(speedSelector).get("speed");
+    valueSelected = new FormData(pageElements.speedSelector).get("speed");
   } else {
     valueSelected = 200;
   }
-  changeGameSpeed(Number(valueSelected));
+  Settings.changeGameSpeed(Number(valueSelected));
 }

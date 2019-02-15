@@ -1,59 +1,54 @@
 'use strict'
 
-var instructionsDiv = document.getElementById("instructions"),
-  instructionsHideButton = document.getElementById("hideInstructions"),
-  instructionsShowButton = document.getElementById("showInstructions"),
-  settingsDiv = document.getElementById("settings"),
-  settingsHideButton = document.getElementById("hideSettings"),
-  settingsShowButton = document.getElementById("showSettings");
+function Display() {}
 
-function hideInstructions() {
-  instructionsDiv.hidden = true;
-  instructionsHideButton.hidden = true;
-  instructionsShowButton.hidden = false;
+Display.hideInstructions = function() {
+  pageElements.instructionsDiv.hidden = true;
+  pageElements.instructionsHideButton.hidden = true;
+  pageElements.instructionsShowButton.hidden = false;
 }
 
-function hidePlayArea() {
-  gameViewTable.hidden = true;
-  playButton.hidden = true;
-  resetButton.hidden = true;
+Display.hidePlayArea = function() {
+  pageElements.gameView.hidden = true;
+  pageElements.playButton.hidden = true;
+  pageElements.resetButton.hidden = true;
 }
 
-function hideSettings() {
-  settingsDiv.hidden = true;
-  settingsHideButton.hidden = true;
-  settingsShowButton.hidden = false;
+Display.hideSettings = function() {
+  pageElements.settingsDiv.hidden = true;
+  pageElements.settingsHideButton.hidden = true;
+  pageElements.settingsShowButton.hidden = false;
 }
 
-function showInstructions() {
-  instructionsDiv.innerHTML = avatar.instructions;
-  instructionsDiv.hidden = false;
-  instructionsHideButton.hidden = false;
-  instructionsShowButton.hidden = true;
-  hideSettings();
-  hidePlayArea();
+Display.showInstructions = function() {
+  pageElements.instructionsDiv.innerHTML = avatar.instructions;
+  pageElements.instructionsDiv.hidden = false;
+  pageElements.instructionsHideButton.hidden = false;
+  pageElements.instructionsShowButton.hidden = true;
+  Display.hideSettings();
+  Display.hidePlayArea();
 }
 
-function showPlayArea() {
-  gameViewTable.hidden = false;
-  if(alive) {
-    prepareGame();
+Display.showPlayArea = function() {
+  pageElements.gameView.hidden = false;
+  if(avatar.alive) {
+    GameSetUp.prepareGame();
   } else {
-    resetButton.hidden = false;
-    positionResetButton();
+    pageElements.resetButton.hidden = false;
+    layoutController.positionResetButton();
   }
 }
 
-function showSettings() {
-  settingsDiv.hidden = false;
-  settingsHideButton.hidden = false;
-  settingsShowButton.hidden = true;
-  hideInstructions();
-  hidePlayArea();
+Display.showSettings = function() {
+  pageElements.settingsDiv.hidden = false;
+  pageElements.settingsHideButton.hidden = false;
+  pageElements.settingsShowButton.hidden = true;
+  Display.hideInstructions();
+  Display.hidePlayArea();
 }
 
-function viewDefault() {
-  hideInstructions();
-  hideSettings();
-  showPlayArea();
+Display.viewDefault = function() {
+  Display.hideInstructions();
+  Display.hideSettings();
+  Display.showPlayArea();
 }

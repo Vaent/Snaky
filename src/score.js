@@ -16,5 +16,5 @@ Score.prototype.increaseScore = function(amount) {
 }
 
 Score.prototype.updateDisplay = function() {
-  scoreDisplay.innerHTML = `Score: ${this.score}`;
+  pageElements.scoreDisplay.innerHTML = `Score: ${this.score}`;
 }

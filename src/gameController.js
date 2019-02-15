@@ -3,18 +3,13 @@
 var avatar,
   score,
   gameIsInProgress = false,
-  alive = true,
   foodWasEaten = false,
   pendingMove,
   numberOfRows = 20,
   numberOfColumns = 20,
   oldRowIndex,
   oldColIndex,
-  delayBetweenMoves,
-  buttons = document.getElementsByTagName("button"),
-  controlsSelectorInstructions = document.getElementById("controlsSelectorInstructions"),
-  documentBanner = document.getElementById("banner"),
-  scoreDisplay = document.getElementById("scoreDisplay");
+  delayBetweenMoves;
 
 function cellExists(rowIndex, colIndex) {
   return !!findCellInTable(rowIndex, colIndex);
@@ -43,16 +38,16 @@ function findCellInTable(rowIndex, colIndex) {
 }
 
 function gameOver() {
-  alive = false;
-  for(let i=0; i<buttons.length; i++) {
-    buttons[i].disabled=false;
+  avatar.alive = false;
+  for(let i=0; i<pageElements.buttons.length; i++) {
+    pageElements.buttons[i].disabled=false;
   }
   for(let s=0; s<speedSelector.children.length; s++) {
     speedSelector.children[s].disabled = false;
   }
   document.querySelector('meta[name="viewport"]').content = "user-scalable=yes";
-  resetButton.hidden = false;
-  positionResetButton();
+  pageElements.resetButton.hidden = false;
+  layoutController.positionResetButton();
 }
 
 function getRandomEmptyCell() {
@@ -78,24 +73,23 @@ function move() {
     avatar.digestFood();
     foodWasEaten = false;
   }
-  if(alive) {
+  if(avatar.alive) {
     pendingMove = setTimeout(function(){ move() }, delayBetweenMoves);
   }
 }
 
 function startGame() {
-  playButton.hidden = true;
+  pageElements.playButton.hidden = true;
   document.getElementById("menu").hidden = true;
-  // scoreDisplay.innerHTML = "Score: 0";
   score = new Score();
-  scoreDisplay.hidden = false;
+  pageElements.scoreDisplay.hidden = false;
   document.querySelector('meta[name="viewport"]').content = "user-scalable=no";
   document.activeElement.blur();
   changeDirectionToRight();
-  setGameSpeed();
-  documentBanner.style.fontSize = "2em";
-  for(let i=0; i<buttons.length; i++) {
-    buttons[i].disabled=true;
+  Settings.setGameSpeed();
+  pageElements.banner.style.fontSize = "2em";
+  for(let i=0; i<pageElements.buttons.length; i++) {
+    pageElements.buttons[i].disabled=true;
   }
   for(let s=0; s<speedSelector.children.length; s++) {
     speedSelector.children[s].disabled = true;
@@ -119,7 +113,7 @@ function tryToMove(bodyPart) {
 
 function updateBodyPosition() {
   avatar.body.forEach(function(bodyPart) {
-    if(alive) { // after the head dies, the rest of the body doesn't move
+    if(avatar.alive) { // after the head dies, the rest of the body doesn't move
       updateIndices(bodyPart);
       tryToMove(bodyPart);
     }
@@ -135,38 +129,3 @@ function updateIndices(bodyPart) {
     [oldColIndex, bodyPart.col] = [bodyPart.col, oldColIndex];
   }
 }
-
-
-// functions to set up the game:
-
-function prepareGame() {
-  documentBanner.innerHTML = avatar.constructor.name;
-  document.title = avatar.constructor.name;
-  document.getElementById("menu").hidden = false;
-  createGameView();
-  avatar.createDefaultBody();
-  avatar.body.forEach(function(bodyPart){ avatar.display(bodyPart) });
-}
-
-function resetGame() {
-  clearTimeout(pendingMove);
-  scoreDisplay.hidden = true;
-  documentBanner.style.fontSize = "";
-  gameIsInProgress = false;
-  alive = true;
-  rowChangeAmount = undefined;
-  colChangeAmount = undefined;
-  prepareGame();
-}
-
-(function() {
-  document.addEventListener('DOMContentLoaded', function() {
-    attachCSSEditors();
-    selectGameStyle(Snaky);
-    viewDefault();
-    keyController = new KeyController();
-    tapController = new TapController();
-    createScreenChangeListeners();
-    if(!FormData.prototype.get) {speedSelector.innerHTML = "";}
-  });
-})();
