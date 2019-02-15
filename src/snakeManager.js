@@ -38,7 +38,7 @@ Snaky.prototype.createDefaultBody = function() {
 Snaky.prototype.digestFood = function() {
   this.addToSnakeBody('<', oldRowIndex, oldColIndex);
   this.display( this.body[this.body.length - 1] );
-  increaseScore(1);
+  score.increaseScore(1);
   makeFood();
 }
 

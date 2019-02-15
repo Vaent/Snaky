@@ -22,7 +22,7 @@
 
     <div id="settings" hidden>
       <div class="settingCategory">
-        <p class='setting-label'>
+        <p class='settingLabel'>
           Game speed:
         </p>
         <form id="speedSelector">
@@ -36,36 +36,36 @@
         </form>
       </div>
       <div class="settingCategory">
-        <p class='setting-label'>
+        <p class='settingLabel'>
           Game variant:
         </p>
         <button onclick=selectGameStyle(Comet)>Comet</button>
         <button onclick=selectGameStyle(Snaky)>Snaky</button>
       </div>
       <div class="settingCategory">
-        <p class='setting-label'>
+        <p class='settingLabel'>
           Keyboard controls:
         </p>
         <table id="controlsSelector">
           <tr>
             <td><label for="upControl">Up:</label></td>
             <td id="upControlDisplay"><label for="upControl">ArrowUp</label></td>
-            <td hidden><button id="upControl" onclick=changeControl('up')></td>
+            <td hidden><button id="upControl" onclick=bindKeyFor('up')></td>
           </tr>
           <tr>
             <td><label for="leftControl">Left:</label></td>
             <td id="leftControlDisplay"><label for="leftControl">ArrowLeft</label></td>
-            <td hidden><button id="leftControl" onclick=changeControl('left')></td>
+            <td hidden><button id="leftControl" onclick=bindKeyFor('left')></td>
           </tr>
           <tr>
             <td><label for="downControl">Down:</label></td>
             <td id="downControlDisplay"><label for="downControl">ArrowDown</label></td>
-            <td hidden><button id="downControl" onclick=changeControl('down')></td>
+            <td hidden><button id="downControl" onclick=bindKeyFor('down')></td>
           </tr>
           <tr>
             <td><label for="rightControl">Right:</label></td>
             <td id="rightControlDisplay"><label for="rightControl">ArrowRight</label></td>
-            <td hidden><button id="rightControl" onclick=changeControl('right')></td>
+            <td hidden><button id="rightControl" onclick=bindKeyFor('right')></td>
           </tr>
         </table>
         <p id="controlsSelectorInstructions">Click/tap a control to change it.</p>
@@ -76,11 +76,13 @@
     <button id="playButton" onclick="startGame()">Play</button>
     <button id="resetButton" onclick=resetGame()>Reset game</button>
 
-    <script src="cometManager.js"></script>
-    <script src="display.js"></script>
-    <script src="gameController.js"></script>
-    <script src="screenLayout.js"></script>
-    <script src="settings.js"></script>
-    <script src="snakeManager.js"></script>
+    <script src="src/cometManager.js"></script>
+    <script src="src/display.js"></script>
+    <script src="src/directionControls.js"></script>
+    <script src="src/gameController.js"></script>
+    <script src="src/screenLayout.js"></script>
+    <script src="src/score.js"></script>
+    <script src="src/settings.js"></script>
+    <script src="src/snakeManager.js"></script>
   </body>
 </html>

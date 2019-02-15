@@ -26,7 +26,7 @@ div {
   margin: 10px;
 }
 #controlPanel {
-  min-width: 18em;
+  min-width: 18em;  /* Value is set based on h1 font-size */
 }
 #instruction, #settings {
   width: 100%;
@@ -41,13 +41,11 @@ div {
 h1 {
   font-size: 3em;
 }
-p.setting-label {
+p.settingLabel {
   color: green;
 }
 table {
   border: 2px solid black;
-  /* margin-left: auto;
-  margin-right: auto; */
 }
 #controlsSelector {
   border: none;

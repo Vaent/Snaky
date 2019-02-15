@@ -2,7 +2,7 @@
 
 A clone of Snake created to test my ability to manipulate an HTML page using raw JavaScript.
 
-The game has been hosted at cardpeegee.com/sides/snaky, and you can get a copy on your computer by simply downloading and saving all the HTML, CSS and JS files in a convenient folder. To play the game using downloaded files, open index.html in your favourite browser.
+The game has been hosted at cardpeegee.com/sides/snaky, and you can get a copy on your computer by simply downloading and saving all the HTML, CSS and JS files in a convenient folder (make sure the JS files are in a `src` subdirectory). To play the game using downloaded files, open index.html in your favourite browser.
 
 **The game is usually only tested in Chrome (current version).**
 - It was recently tested in Firefox and working well, although screen orientation was not always detected correctly so the layout may not update.

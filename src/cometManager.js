@@ -42,7 +42,7 @@ Comet.prototype.createDefaultBody = function() {
 Comet.prototype.digestFood = function() {
   this.addToCometBody(oldRowIndex, oldColIndex);
   this.display( this.body[this.body.length - 1] );
-  increaseScore(1);
+  score.increaseScore(1);
   makeFood();
 }
 
@@ -62,7 +62,7 @@ Comet.prototype.disintegrate = function(chunkOfTail) {
       delayBetweenMoves / 1.5
     );
   }
-  if(alive) {decreaseScore(2)}
+  if(alive) {score.decreaseScore(2)}
   if(chunkOfTail.length > 0) {
     setTimeout(
       () => {this.disintegrate(chunkOfTail)},

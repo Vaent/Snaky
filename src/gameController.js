@@ -1,48 +1,23 @@
 'use strict'
 
 var avatar,
-  score = 0,
+  score,
   gameIsInProgress = false,
   alive = true,
   foodWasEaten = false,
   pendingMove,
   numberOfRows = 20,
   numberOfColumns = 20,
-  rowChangeAmount,
-  colChangeAmount,
-  newRowChangeAmount,
-  newColChangeAmount,
   oldRowIndex,
   oldColIndex,
   delayBetweenMoves,
-  controls = {down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp'},
-  controlToBeChanged,
   buttons = document.getElementsByTagName("button"),
+  controlsSelectorInstructions = document.getElementById("controlsSelectorInstructions"),
   documentBanner = document.getElementById("banner"),
   scoreDisplay = document.getElementById("scoreDisplay");
 
 function cellExists(rowIndex, colIndex) {
   return !!findCellInTable(rowIndex, colIndex);
-}
-
-function changeDirectionToDown() {
-  newRowChangeAmount = 1;
-  newColChangeAmount = 0;
-}
-
-function changeDirectionToLeft() {
-  newRowChangeAmount = 0;
-  newColChangeAmount = -1;
-}
-
-function changeDirectionToRight() {
-  newRowChangeAmount = 0;
-  newColChangeAmount = 1;
-}
-
-function changeDirectionToUp() {
-  newRowChangeAmount = -1;
-  newColChangeAmount = 0;
 }
 
 function checkForDirectionChange() {
@@ -52,11 +27,6 @@ function checkForDirectionChange() {
     rowChangeAmount = newRowChangeAmount;
     colChangeAmount = newColChangeAmount;
   }
-}
-
-function decreaseScore(amount) {
-  score -= amount;
-  scoreDisplay.innerHTML = `Score: ${score}`;
 }
 
 function deleteAndRemake(bodyPart) {
@@ -95,11 +65,6 @@ function getRandomEmptyCell() {
   return [rowIndex, colIndex];
 }
 
-function increaseScore(amount) {
-  score += amount;
-  scoreDisplay.innerHTML = `Score: ${score}`;
-}
-
 function makeFood() {
   let spawnPoint = getRandomEmptyCell();
   avatar.putFoodInCell(spawnPoint[0], spawnPoint[1]);
@@ -121,7 +86,8 @@ function move() {
 function startGame() {
   playButton.hidden = true;
   document.getElementById("menu").hidden = true;
-  scoreDisplay.innerHTML = "Score: 0";
+  // scoreDisplay.innerHTML = "Score: 0";
+  score = new Score();
   scoreDisplay.hidden = false;
   document.querySelector('meta[name="viewport"]').content = "user-scalable=no";
   document.activeElement.blur();
@@ -171,91 +137,6 @@ function updateIndices(bodyPart) {
 }
 
 
-// functions relating to keyboard/touchscreen controls:
-
-function changeControl(direction) {
-  if(!!controlToBeChanged) {return}
-
-  controlToBeChanged = direction;
-  document.getElementById(
-    controlToBeChanged + 'ControlDisplay'
-  ).style.color = 'red';
-  document.getElementById("controlsSelectorInstructions").innerText = "Press the new key to bind.";
-}
-
-function changeControlKeyBinding(newKey) {
-  if(newKey.length === 1 && !!newKey.match(/[a-z]/)) {
-    newKey = newKey.toLocaleUpperCase();
-  }
-  if(!Object.values(controls).find(key => key === newKey)) {
-    controls[controlToBeChanged] = newKey;
-  }
-
-  let keyDisplay = document.getElementById(controlToBeChanged + 'ControlDisplay');
-  keyDisplay.innerHTML = `<label for="${controlToBeChanged}Control">${controls[controlToBeChanged]}</label>`;
-  keyDisplay.style.color = 'black';
-  document.getElementById("controlsSelectorInstructions").innerText = "Click/tap a control to change it.";
-  controlToBeChanged = null;
-}
-
-function createKeyListener() {
-  document.addEventListener("keydown", keyAction);
-}
-
-function createScreenTapListener() {
-  document.addEventListener("touchstart", tapAction);
-}
-
-function keyAction(event) {
-  if(!!controlToBeChanged) {
-    changeControlKeyBinding(event.key);
-    return;
-  }
-
-  let keyPress = event.key;
-  if(keyPress.length === 1 && !!keyPress.match(/[a-z]/)) {
-    keyPress = keyPress.toLocaleUpperCase();
-  }
-
-  switch(keyPress) {
-    case controls.down:
-      changeDirectionToDown();
-      break;
-    case controls.left:
-      changeDirectionToLeft();
-      break;
-    case controls.right:
-      changeDirectionToRight();
-      break;
-    case controls.up:
-      changeDirectionToUp();
-      break;
-  }
-
-  if(gameIsInProgress && Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
-    move(); // if direction has changed, don't wait for timeout
-  }
-}
-
-function tapAction(event) {
-  let gameViewDimensions = gameViewTable.getBoundingClientRect();
-
-  if(rowChangeAmount === 0) {
-    let snakeHeadPosition = cellSize * (avatar.body[0].row - 0.5) + gameViewDimensions.top;
-    let distanceFromHead = (event.changedTouches[0].clientY - snakeHeadPosition);
-    distanceFromHead > 0 ? changeDirectionToDown() : changeDirectionToUp();
-  } else {
-    let snakeHeadPosition = cellSize * (avatar.body[0].col - 0.5) + gameViewDimensions.left;
-    let distanceFromHead = (event.changedTouches[0].clientX - snakeHeadPosition);
-    distanceFromHead > 0 ? changeDirectionToRight() : changeDirectionToLeft();
-  }
-
-  if(gameIsInProgress && Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
-    move(); // if direction has changed, don't wait for timeout
-  }
-}
-
-
 // functions to set up the game:
 
 function prepareGame() {
@@ -269,7 +150,6 @@ function prepareGame() {
 
 function resetGame() {
   clearTimeout(pendingMove);
-  score = 0;
   scoreDisplay.hidden = true;
   documentBanner.style.fontSize = "";
   gameIsInProgress = false;
@@ -284,8 +164,8 @@ function resetGame() {
     attachCSSEditors();
     selectGameStyle(Snaky);
     viewDefault();
-    createKeyListener();
-    createScreenTapListener();
+    keyController = new KeyController();
+    tapController = new TapController();
     createScreenChangeListeners();
     if(!FormData.prototype.get) {speedSelector.innerHTML = "";}
   });
