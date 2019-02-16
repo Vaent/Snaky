@@ -13,9 +13,7 @@ Snaky.prototype.addToSnakeBody = function(char, row, col) {
 
 Snaky.prototype.cellIsOccupied = function(rowIndex, colIndex) {
   let cellContents = findCellInTable(rowIndex, colIndex).innerHTML;
-  return !!(
-    ['o','&lt;','&gt;','v','^'].find(char => cellContents === char)
-  );
+  return !(cellContents === '' || cellContents === ';');
 }
 
 Snaky.prototype.checkForFoodAt = function(rowIndex, colIndex) {
