@@ -5,16 +5,19 @@ let cellCSS = document.createElement('style'),
   cellSize;
 
 function LayoutController() {
+  this.numberOfRows = 20;
+  this.numberOfColumns = 20;
+
   document.body.appendChild(cellCSS);
   window.matchMedia("(min-height: 100vw)").addListener(this.updateScreenLayout);
   window.addEventListener('resize', this.updateScreenLayout);
-}
+};
 
 LayoutController.prototype.createGameView = function() {
   let htmlToAdd = '<tbody>';
-  for(let r=1; r<=numberOfRows; r++) {
+  for(let r=1; r<=this.numberOfRows; r++) {
     htmlToAdd += '<tr>';
-    for(let c=1; c<=numberOfColumns; c++) {
+    for(let c=1; c<=this.numberOfColumns; c++) {
       let row2digit = String(r).padStart(2,'0');
       let col2digit = String(c).padStart(2,'0');
       htmlToAdd += `<td id='r${row2digit}c${col2digit}'></td>`;
@@ -26,32 +29,32 @@ LayoutController.prototype.createGameView = function() {
   pageElements.resetButton.hidden = true;
   pageElements.playButton.hidden = false;
   this.updateScreenLayout();
-}
+};
 
 LayoutController.prototype.detectOrientation = function() {
   return (
     window.matchMedia("(min-height: 100vw)").matches ? 'portrait' : 'landscape'
   );
-}
+};
 
 LayoutController.prototype.getCellSizeLimit = function(windowSize, otherContentSize, numberOfDivisions) {
   return Math.floor(
     (windowSize - otherContentSize) / numberOfDivisions
   );
-}
+};
 
 LayoutController.prototype.getLayoutValues = function(orientation) {
   let wide = {
     windowSize: window.innerWidth,
     controlPanelSize: pageElements.controlPanel.clientWidth,
     margins: ['margin-left', 'margin-right'],
-    numberOfDivisions: numberOfColumns
+    numberOfDivisions: this.numberOfColumns
   };
   let tall = {
     windowSize: window.innerHeight,
     controlPanelSize: pageElements.controlPanel.clientHeight,
     margins: ['margin-top', 'margin-bottom'],
-    numberOfDivisions: numberOfRows
+    numberOfDivisions: this.numberOfRows
   };
 
   if(orientation === 'portrait') {
@@ -59,12 +62,12 @@ LayoutController.prototype.getLayoutValues = function(orientation) {
   } else {
     return { primary: wide, secondary: tall }
   }
-}
+};
 
 LayoutController.prototype.optimiseCellSize = function(maxRowHeight, maxColWidth) {
   // target cell size is reduced from calculated values to allow for borders
   cellSize = Math.min(maxRowHeight, maxColWidth) - 3;
-}
+};
 
 LayoutController.prototype.positionPlayButton = function() {
   let gameViewDimensions = pageElements.gameView.getBoundingClientRect();
@@ -72,7 +75,7 @@ LayoutController.prototype.positionPlayButton = function() {
   let posY = (gameViewDimensions.top + gameViewDimensions.bottom - pageElements.playButton.clientHeight) / 2;
   pageElements.playButton.style.left = `${posX}px`;
   pageElements.playButton.style.top = `${posY}px`;
-}
+};
 
 LayoutController.prototype.positionResetButton = function() {
   let gameViewDimensions = pageElements.gameView.getBoundingClientRect();
@@ -80,11 +83,11 @@ LayoutController.prototype.positionResetButton = function() {
   let posY = (gameViewDimensions.top + gameViewDimensions.bottom - pageElements.resetButton.clientHeight) / 2;
   pageElements.resetButton.style.left = `${posX}px`;
   pageElements.resetButton.style.top = `${posY}px`;
-}
+};
 
 LayoutController.prototype.scaleTableCells = function() {
   cellCSS.innerHTML = `#gameView td { width: ${cellSize}px; height: ${cellSize}px; font-size: ${0.8 * cellSize}px }`;
-}
+};
 
 LayoutController.prototype.updateFlexAlignment = function(orientation) {
   document.body.style.height = `${window.innerHeight}px`;
@@ -93,7 +96,7 @@ LayoutController.prototype.updateFlexAlignment = function(orientation) {
   } else {
     document.body.style.flexDirection = "column";
   }
-}
+};
 
 LayoutController.prototype.updateScreenLayout = function() {
   let or = layoutController.detectOrientation();
@@ -117,4 +120,4 @@ LayoutController.prototype.updateScreenLayout = function() {
   layoutController.scaleTableCells();
   layoutController.positionPlayButton();
   layoutController.positionResetButton();
-}
+};

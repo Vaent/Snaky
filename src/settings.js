@@ -4,15 +4,15 @@ function Settings() {}
 
 Settings.changeGameSpeed = function(delayValue) {
   delayBetweenMoves = delayValue;
-}
+};
 
 Settings.selectGameStyle = function(option) {
-  if(!gameIsInProgress || !avatar.alive) {
-    avatar = new option;
-    pageElements.banner.innerHTML = avatar.constructor.name;
-    document.title = avatar.constructor.name;
+  if(!game.isInProgress() || !game.avatar.isAlive()) {
+    game.avatar = new option;
+    pageElements.banner.innerHTML = game.avatar.constructor.name;
+    document.title = game.avatar.constructor.name;
   }
-}
+};
 
 Settings.setGameSpeed = function() {
   let valueSelected;
@@ -22,4 +22,4 @@ Settings.setGameSpeed = function() {
     valueSelected = 200;
   }
   Settings.changeGameSpeed(Number(valueSelected));
-}
+};

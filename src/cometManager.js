@@ -3,78 +3,68 @@
 function Comet() {
   this.alive = true;
   this.body = [];
+  this.eatingFood = false;
   this.instructions = "<p>Click 'Play' to start the game.</p><p>The comet will start moving to the right. To change direction, use the keys defined in the Settings, or tap your touchscreen.</p><p>Absorb asteroids to increase your score and grow the comet.</p><p>If the comet runs into itself, a section of its tail will be lost and your score will be severely reduced.</p><p>The game ends when the comet hits a wall.</p>";
-}
+};
 
 Comet.prototype.addToCometBody = function(row, col) {
   this.body.push({row:row, col:col});
   this.updateHues();
-}
-
-Comet.prototype.cellIsOccupied = function(rowIndex, colIndex) {
-  return (
-    findCellInTable(rowIndex, colIndex).style.backgroundColor !== '' &&
-    findCellInTable(rowIndex, colIndex).style.backgroundColor !== 'brown'
-  );
-}
+};
 
 Comet.prototype.checkForFoodAt = function(rowIndex, colIndex) {
-  if(findCellInTable(rowIndex, colIndex).style.backgroundColor === 'brown') {
-    foodWasEaten = true;
+  if(game.getCellByIndices(rowIndex, colIndex).style.backgroundColor === 'brown') {
+    this.eatingFood = true;
   }
-}
+};
 
 Comet.prototype.clearCell = function(rowIndex, colIndex) {
   this.colourCell(rowIndex, colIndex, '');
-}
+};
 
 Comet.prototype.colourCell = function(rowIndex, colIndex, colour) {
-  findCellInTable(rowIndex, colIndex).style.backgroundColor = colour;
-}
+  game.getCellByIndices(rowIndex, colIndex).style.backgroundColor = colour;
+};
 
 Comet.prototype.createDefaultBody = function() {
   this.body = [];
-  this.addToCometBody(Math.floor(numberOfRows/2), 4);
-  this.addToCometBody(Math.floor(numberOfRows/2), 3);
-  this.addToCometBody(Math.floor(numberOfRows/2), 2);
-  this.addToCometBody(Math.floor(numberOfRows/2), 1);
-}
+  this.addToCometBody(Math.floor(layoutController.numberOfRows/2), 4);
+  this.addToCometBody(Math.floor(layoutController.numberOfRows/2), 3);
+  this.addToCometBody(Math.floor(layoutController.numberOfRows/2), 2);
+  this.addToCometBody(Math.floor(layoutController.numberOfRows/2), 1);
+};
 
 Comet.prototype.digestFood = function() {
+  this.eatingFood = false;
   this.addToCometBody(oldRowIndex, oldColIndex);
   this.display( this.body[this.body.length - 1] );
   score.increaseScore(1);
-  makeFood();
-}
+  game.makeFood();
+};
 
 Comet.prototype.die = function() {
+  this.alive = false;
   this.colourCell(oldRowIndex, oldColIndex, 'red');
-  gameOver();
-  this.disintegrate( this.body.splice(1) );
-}
+  game.gameOver();
+  this.disintegrate(this.body.splice(1));
+};
 
 Comet.prototype.disintegrate = function(chunkOfTail) {
   let bodyPart = chunkOfTail.shift();
   // if the comet recently ate, a bodyPart may not have been displayed yet
-  if(!!findCellInTable(bodyPart.row, bodyPart.col)) {
+  if(!!game.getCellByIndices(bodyPart.row, bodyPart.col)) {
     this.colourCell(bodyPart.row, bodyPart.col, 'red');
-    setTimeout(
-      () => {this.clearCell(bodyPart.row, bodyPart.col)},
-      delayBetweenMoves / 1.5
-    );
+    setTimeout(() => {this.clearCell(bodyPart.row, bodyPart.col)}, 80);
   }
-  if(this.alive) {score.decreaseScore(2)}
+  if(this.isAlive()) {score.decreaseScore(2)}
   if(chunkOfTail.length > 0) {
-    setTimeout(
-      () => {this.disintegrate(chunkOfTail)},
-      delayBetweenMoves / 2
-    )
+    setTimeout(() => {this.disintegrate(chunkOfTail)}, 50);
   }
-}
+};
 
 Comet.prototype.display = function(bodyPart) {
   this.colourCell(bodyPart.row, bodyPart.col, bodyPart.hue);
-}
+};
 
 Comet.prototype.hitBodyPartAt = function(rowIndex, colIndex) {
   let cutPosition = this.body.indexOf(
@@ -89,20 +79,35 @@ Comet.prototype.hitBodyPartAt = function(rowIndex, colIndex) {
     this.disintegrate( this.body.splice(cutPosition) );
     this.updateHues();
   }
-  deleteAndRemake(this.body[0]);
-}
+  movementController.deleteAndRemake(this.body[0]);
+};
 
 Comet.prototype.hitWall = function() {
   this.die();
+};
+
+Comet.prototype.isAlive = function() {
+  return this.alive;
 }
+
+Comet.prototype.isEatingFood = function() {
+  return this.eatingFood;
+}
+
+Comet.prototype.isOccupyingCell = function(rowIndex, colIndex) {
+  return (
+    game.getCellByIndices(rowIndex, colIndex).style.backgroundColor !== '' &&
+    game.getCellByIndices(rowIndex, colIndex).style.backgroundColor !== 'brown'
+  );
+};
 
 Comet.prototype.putFoodInCell = function(rowIndex, colIndex) {
   this.colourCell(rowIndex, colIndex, 'brown');
-}
+};
 
 Comet.prototype.updateHues = function() {
   this.body.forEach(bodyPart => {
     let strength = 180 * this.body.indexOf(bodyPart) / this.body.length;
     bodyPart.hue = `rgb(${strength},${strength},160)`;
   });
-}
+};

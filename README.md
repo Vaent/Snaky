@@ -39,11 +39,11 @@ The timer is assigned to a variable so that it can be deleted if `move()` is cal
 
 #### Food
 
-Food, represented by a semicolon, is spawned by the `makeFood()` function. Random row and column numbers are generated to determine where the food will spawn. If the randomly chosen cell is not empty, new random values are generated until an empty cell is found. The semicolon is then inserted in the cell and remains there until it is overwritten i.e. by the snake's head moving onto it.
+Food, represented by a semicolon, is spawned by the `Game` object's `makeFood()` function. Random row and column numbers are generated to determine where the food will spawn. If the randomly chosen cell is not empty, new random values are generated until an empty cell is found. The semicolon is then inserted in the cell and remains there until it is overwritten i.e. by the snake's head moving onto it.
 
-Food is spawned at the start of the game - after the snake is created, to ensure it doesn't accidentally get overwritten. `tryToMove()` identifies when a body part will move into a cell with a semicolon and calls `snakeEatsSemicolon()`, which in turn calls `makeFood()` to ensure there will still be food somewhere after the existing food is overwritten.
+Food is spawned at the start of the game - after the snake is created, to ensure it doesn't accidentally get overwritten. `tryToMove()` identifies when a body part will move into a cell with a semicolon and sets a flag to call the avatar's `digestFood()` method once movement is completed, which in turn calls `makeFood()` to ensure there will still be food somewhere after the existing food is overwritten.
 
-`snakeEatsSemicolon()` also adds a new body part on the end of the snake, initialised in a nonexistent cell to ensure no conflicts with any elements already in play; later it will take the position of the previous final body part, after that one has moved on. Initialising the new body part in a nonexistent cell requires an additional check (`if(!!findCellInTable(oldRowIndex, oldColIndex)) {...}` - in the `deleteAndRemake(bodyPart)` function) to ensure the function doesn't try to clear that cell after the new body part has moved into play.
+`digestFood()` also adds a new body part on the end of the snake, initialised in a nonexistent cell to ensure no conflicts with any elements already in play; later it will take the position of the previous final body part, after that one has moved on. Initialising the new body part in a nonexistent cell requires an additional check (`if(game.isCellValid(oldRowIndex, oldColIndex)) {...}` - in the `deleteAndRemake(bodyPart)` function) to ensure the function doesn't try to clear that cell after the new body part has moved into play.
 
 ---
 

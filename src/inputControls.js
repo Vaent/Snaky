@@ -4,32 +4,6 @@ var keyController, tapController,
   rowChangeAmount, colChangeAmount,
   newRowChangeAmount, newColChangeAmount;
 
-// general functions relating to controlling movement direction in-game:
-
-function bindKeyFor(direction) {
-  keyController.changeControl(direction);
-}
-
-function changeDirectionToDown() {
-  newRowChangeAmount = 1;
-  newColChangeAmount = 0;
-}
-
-function changeDirectionToLeft() {
-  newRowChangeAmount = 0;
-  newColChangeAmount = -1;
-}
-
-function changeDirectionToRight() {
-  newRowChangeAmount = 0;
-  newColChangeAmount = 1;
-}
-
-function changeDirectionToUp() {
-  newRowChangeAmount = -1;
-  newColChangeAmount = 0;
-}
-
 // constructors for key controls and touchscreen controls:
 
 function KeyController() {
@@ -41,7 +15,11 @@ function KeyController() {
 
   this.keyAction = this.keyAction.bind(this);
   document.addEventListener("keydown", this.keyAction);
-}
+};
+
+KeyController.bindKeyFor = function(direction) {
+  keyController.changeControl(direction);
+};
 
 KeyController.prototype.changeControl = function(direction) {
   if(!!this.controlToBeChanged) {return}
@@ -51,7 +29,7 @@ KeyController.prototype.changeControl = function(direction) {
     this.controlToBeChanged + 'ControlDisplay'
   ).style.color = 'red';
   pageElements.controlsSelectorInstructions.innerHTML = "Press the new key to bind.";
-}
+};
 
 KeyController.prototype.changeControlKeyBinding = function(newKey) {
   if(!Object.values(this).find(control => control === newKey)) {
@@ -63,7 +41,7 @@ KeyController.prototype.changeControlKeyBinding = function(newKey) {
   keyDisplay.style.color = 'black';
   pageElements.controlsSelectorInstructions.innerHTML = "Click/tap a control to change it.";
   this.controlToBeChanged = '';
-}
+};
 
 KeyController.prototype.keyAction = function(event) {
   let keyPress = event.key;
@@ -77,51 +55,51 @@ KeyController.prototype.keyAction = function(event) {
     return;
   }
 
-  if(!gameIsInProgress) {return}
+  if(!game.isInProgress()) {return}
 
   switch(keyPress) {
     case this.down:
-      changeDirectionToDown();
+      movementController.changeDirectionToDown();
       break;
     case this.left:
-      changeDirectionToLeft();
+      movementController.changeDirectionToLeft();
       break;
     case this.right:
-      changeDirectionToRight();
+      movementController.changeDirectionToRight();
       break;
     case this.up:
-      changeDirectionToUp();
+      movementController.changeDirectionToUp();
       break;
   }
 
   if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
-    move(); // if direction has changed, don't wait for timeout
+    movementController.move(); // if direction has changed, don't wait for timeout
   }
-}
+};
 
 
 
 function TapController() {
   document.addEventListener("touchstart", this.tapAction);
-}
+};
 
 TapController.prototype.tapAction = function(event) {
-  if(pageElements.gameView.hidden || !gameIsInProgress || !avatar.alive) {
+  if(pageElements.gameView.hidden || !game.isInProgress() || !game.avatar.isAlive()) {
     return;
   }
 
   let gameViewDimensions = pageElements.gameView.getBoundingClientRect();
   if(rowChangeAmount === 0) {
-    let snakeHeadPosition = cellSize * (avatar.body[0].row - 0.5) + gameViewDimensions.top;
+    let snakeHeadPosition = cellSize * (game.avatar.body[0].row - 0.5) + gameViewDimensions.top;
     let distanceFromHead = (event.changedTouches[0].clientY - snakeHeadPosition);
-    distanceFromHead > 0 ? changeDirectionToDown() : changeDirectionToUp();
+    distanceFromHead > 0 ? movementController.changeDirectionToDown() : movementController.changeDirectionToUp();
   } else {
-    let snakeHeadPosition = cellSize * (avatar.body[0].col - 0.5) + gameViewDimensions.left;
+    let snakeHeadPosition = cellSize * (game.avatar.body[0].col - 0.5) + gameViewDimensions.left;
     let distanceFromHead = (event.changedTouches[0].clientX - snakeHeadPosition);
-    distanceFromHead > 0 ? changeDirectionToRight() : changeDirectionToLeft();
+    distanceFromHead > 0 ? movementController.changeDirectionToRight() : movementController.changeDirectionToLeft();
   }
 
   if(Math.abs(newRowChangeAmount) !== Math.abs(rowChangeAmount)) {
-    move(); // if direction has changed, don't wait for timeout
+    movementController.move(); // if direction has changed, don't wait for timeout
   }
-}
+};
